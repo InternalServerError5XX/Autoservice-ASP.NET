@@ -1,0 +1,153 @@
+﻿@using Automarket.Domain.Entity;
+@using Automarket.Domain.Enum;
+@using Automarket.Domain.ViewModels.Account;
+@using System.Text.RegularExpressions;
+@model AccountViewModel
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="~/img/site/automarket_1.jpg">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/layout.js" asp-append-version="true"></script>
+<script src="/js/profile.js" asp-append-version="true"></script>
+
+@{
+    Layout = "_EmptyLayout";
+    ViewData["Title"] = "Create Account";
+    bool validationErrors = ViewData.ModelState.Values.Any(e => e.Errors.Any());
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
+}
+
+<body>
+    <div class="profile_header">
+        <a class="back_link" asp-controller="Home" asp-action="Index">
+            <div class="back_container">
+                <img class="back_button" src="~/img/site/back_icon1.png" alt="Back button" />
+                <span class="back_text">Back</span>
+
+            </div>
+        </a>
+        <div class="user_container">
+            <img class="user_icon" src="~/img/site/user_icon.png" alt="User icon" />
+        </div>
+    </div>
+
+    <main class="profile_container">      
+        <div class="profile_bg"></div>
+        <div class="white_bg"></div>
+        <div class="user_information_container">
+            <div class="user_information1">
+                <div class="settings_upper">
+                    <h2 class="profile_title">New Account</h2> 
+                    <button class="save_profile_button" type="submit" id="createAccountSubmit">
+                        <span class="settings_text">Save</span>
+                    </button>
+                </div>
+                
+
+                <div class="create_user_information">
+                    <form asp-controller="Admin" asp-action="CreateAccount" method="post" id="createAccountForm">
+                        <div class="input_column">
+                            <h3 class="create_user_title">User information</h3>
+                            <div>
+                                <span asp-validation-for="Username" class="validation_text"></span>
+                                <label class="profile_label" for="Username">Username</label>
+                                <input class="profile_input" asp-for="Username"
+                                       type="text" name="Username" />
+                            </div>
+                        </div>
+                        <div class="input_column">
+                            <div>
+                                <span asp-validation-for="Email" class="validation_text"></span>
+                                <label class="profile_label" for="Email">Login</label>
+                                <input class="profile_input" asp-for="Email"
+                                       type="email" name="Email" />
+                                
+                            </div>
+                            <div>
+                                <span asp-validation-for="Password" class="validation_text"></span>
+                                <label class="profile_label" for="Password">Password</label>
+                                <input class="profile_input" asp-for="Password"
+                                       type="password" name="Password" required/>
+                            </div>                       
+                        </div>
+                        <div class="input_column">
+                            <div>
+                                <span asp-validation-for="Name" class="validation_text"></span>
+                                <label class="profile_label" for="Name">First name</label>
+                                <input class="profile_input" asp-for="Name"
+                                       type="text" name="Name" />
+                            </div>
+                            <div>
+                                <span asp-validation-for="Lastname" class="validation_text"></span>
+                                <label class="profile_label" for="Lastname">Last name</label>
+                                <input class="profile_input" asp-for="Lastname"
+                                       type="text" name="Lastname" />
+                            </div>
+                        </div>
+                        <div class="input_column">
+                            <div>
+                                <span asp-validation-for="Age" class="validation_text"></span>
+                                <label class="profile_label" for="Age">Age</label>
+                                <input class="profile_input" asp-for="Age"
+                                       type="number" name="Age" min="12" max="120" />
+                            </div>
+                            <div>
+                                <span asp-validation-for="Role" class="validation_text"></span>
+                                <label class="profile_label" for="Role">Role</label>
+                                <select class="profile_input" asp-for="@Model.Role">
+                                    @foreach (var role in Enum.GetValues(typeof(Role)))
+                                    {
+                                        <option value="@role" selected="@Role.User">@role</option>
+                                    }
+                                </select>
+
+                            </div>
+                        </div>                        
+                    </form>
+                </div>
+
+            </div>
+            <div class="user_information2">
+                <div class="short_information">
+                    <img class="user_avatar" src="~/img/site/user_icon.png" alt="User icon" />
+                    <div class="hr_separator"></div>
+                    <div class="short_container">
+                        <div class="info_line">
+                            <span class="short_label">Services status:</span>
+                            <span class="short_text">You have 1 current services</span>
+                            <a class="check_services_button" asp-controller="Home" asp-action="Index">
+                                <span class="settings_text">Check</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>

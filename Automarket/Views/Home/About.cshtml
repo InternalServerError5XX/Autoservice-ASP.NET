@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<section>
+    <section>
+        <div class="pages_path services_path">
+            <a class="home_icon" asp-controller="Home" asp-action="Index"></a>
+            <a class="path_current_page inactive">@ViewData["Title"]</a>
+        </div>
+    </section>
+    <div class="about_container">        
+        <div>           
+            <div class="about_text_container">
+                <span class="about_title">ABOUT US</span>
+                <div class="logo about_text">
+                    <div class="logo_link">
+                        <span class="black_text">Sec</span><span class="yellow_text">Auto</span>
+                    </div>
+                </div>
+                <div class="about_description_container">
+                    <span class="about_description">
+                        Our online car service is a convenient platform for car owners,
+                        where you can quickly and easily find maintenance and repair services,                       
+                        as well as make an online reservation and get the best solutions for your vehicle
+                    </span>
+                </div>
+            </div>
+        </div>
+        <img class="about_img" src="~/img/site/about_bg.jpeg" alt="About" />
+    </div>
+</section>
+
+<section>
+    <div class="stats_container">
+        <div class="stats_cell">
+            <ion-icon class="cell_icon clients_num" name="people-outline"></ion-icon>
+            <span class="cell_title">24.6k</span>
+            <span class="cell_text">Clients last year</span>
+        </div>
+        <div class="stats_cell">
+            <ion-icon class="cell_icon items_num" name="pricetags-outline"></ion-icon>
+            <span class="cell_title">1.3k</span>
+            <span class="cell_text">Items available</span>
+        </div>
+        <div class="stats_cell">
+            <ion-icon class="cell_icon years_num" name="time-outline"></ion-icon>
+            <span class="cell_title">7 years</span>
+            <span class="cell_text">On the Labour Market</span>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="contacts_container">
+        <span class="contacts">
+            OUR CONTACTS
+            <ion-icon class="contacts_bg" name="car-sport-outline"></ion-icon>
+        </span>
+        <div class="contacts_vertical_stripe">
+            <div class="contacts_info">
+                <div class="contacts_item">                    
+                    <ion-icon class="cell_icon phone_icon" name="call-outline"></ion-icon>
+                    <span class="contacts_title">Contact Numbers</span>
+                    <a href="tel:0980001122" class="white_text contacts_text">
+                        <span class="footer_text">(098) 000-11-22</span>
+                    </a>
+                </div>
+                <div class="contacts_item">
+                    <ion-icon class="cell_icon email_icon" name="mail-outline"></ion-icon>
+                    <span class="contacts_title">Email Address</span>
+                    <a href="mailto:secular.support@gmail.com" class="white_text contacts_text">
+                        <span class="footer_text">secular.support@gmail.com</span>
+                    </a>
+                </div>
+                <div class="contacts_item">
+                    <ion-icon class="cell_icon location_icon" name="location-outline"></ion-icon>
+                    <span class="contacts_title">Location</span>
+                    <a href="https://maps.app.goo.gl/wwb83ZNkwTvH3tP66" class="white_text contacts_text">
+                        <span class="footer_text">Lviv, University Street 1</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

@@ -1,0 +1,101 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.ViewModels.Order;
+@model AppointmentViewModel;
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+@{
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
+}
+
+<section>
+    <div class="work_conditions">
+        <div class="first_column_conditions">
+            <span class="upper_conditions_text">How does we work?</span>
+            <span class="middle_conditions_text">Just a few easy steps to get a result</span>
+            <img class="conditions_img" src="~/img/site/autoservices2.jpg" alt="Conditions" />
+            <span class="lower_conditions_text">Make an appointment, don't waste your time</span>
+            <button id="showModalButton" class="activate_button">Apply for</button>
+
+            <div class="modal" id="modal">
+                <div class="modal_form">
+                    <button class="close_button" id="closeButton">&times;</button>
+                    <h2 class="form_title">Fill out the form for services</h2>
+                    <form id="modal_form" method="post" asp-controller="AutoService" asp-action="CreateAppointment" 
+                        data-ajax="true" data-ajax-method="POST" data-ajax-complete="onComplete">
+                        <div class="input_container">
+                            <span asp-validation-for="Name" class="serviceform_validation"></span>
+                            <label asp-for="Name">Input your name</label>
+                            <input asp-for="Name" type="text" placeholder="Name" />
+                        </div>
+                        <div class="input_container">
+                            <span asp-validation-for="PhoneNumber" class="serviceform_validation"></span>
+                            <label asp-for="PhoneNumber">Input your phone number</label>
+                            <input asp-for="PhoneNumber" type="tel" class="inputPhone" id="inputPhone" placeholder="+380 (__) ___ ____" />
+                        </div>
+                        <div class="rememberme_button margin_left">
+                            <input class="custom_checkbox" id="rememberMe" asp-for="CallBack" type="checkbox" value="true" onclick="toggleCallBack()">
+                            <label class="rememberme_label" for="rememberMe"></label>
+                            <span class="rememberme_text">Call me back</span>
+                            <input type="hidden" id="CallBack" asp-for="CallBack" value="false" />
+                        </div>
+                        <div class="input_container">
+                            <span asp-validation-for="Description" class="serviceform_validation"></span>
+                            <label asp-for="Description">Short description</label>
+                            <textarea class="saveform_textarea" asp-for="Description" type="text"></textarea>
+                        </div>
+                        <div class="input_container">
+                            <span asp-validation-for="AppointmentDate" class="serviceform_validation"></span>
+                            <label asp-for="AppointmentDate">Input your date</label>
+                            <input asp-for=AppointmentDate type="datetime-local" id="date" />
+                        </div>
+                        <button class="submit_form" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="second_column_conditions">
+            <div class="conditions_bg">
+                <ul class="conditions_ul">
+                    <li>
+                        <h3 class="condition_title">1. Request</h3>
+                        <p class="condition_description">Leave us a request by phone or on the website</p>
+                    </li>
+                    <li>
+                        <h3 class="condition_title">2. Entry</h3>
+                        <p class="condition_description">The manager will contact you, provide advice and decide on the date and time</p>
+                    </li>
+                    <li>
+                        <h3 class="condition_title">3. Services</h3>
+                        <p class="condition_description">Carrying out diagnostics</p>
+                    </li>
+                    <li>
+                        <h3 class="condition_title">4. Verification and payment</h3>
+                        <p class="condition_description">The master notifies about the completed work, you check and pay for the services</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+

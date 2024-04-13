@@ -1,0 +1,116 @@
+﻿@using Automarket.Domain.Entity;
+@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions;
+@using Automarket.Domain.ViewModels.ConsumableViewModel;
+@model ConsumableViewModel;
+
+@{
+    bool secCheck = Model.Brand.Contains("SecAuto");
+    double cashback = 2;
+    double cashbackValue = (double)Model.Price * cashback / 100;
+
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+
+    bool available = false;
+
+    if (Model.Quantity > 0)
+    {
+        available = true;
+    }
+    else
+    {
+        available = false;
+    }
+}
+
+<hr class="details_hr" />
+<div class="details_columns">
+    <div class="details_text">
+        <span class="details_title">Characteristics</span>
+        <div class="details_first">
+            <div class="detail_title">Seller:</div>
+            <div class="detail_title">Code:</div>
+            <div class="detail_title">Model:</div>
+            <div class="detail_title">Category:</div>
+            <div class="detail_title">Subcategory:</div>
+            <div class="detail_title">Country:</div>
+            <div class="detail_title">Year:</div>
+        </div>
+
+        <div class="details_second">
+            <div class="logo details_logo">
+                <span class="seller_text">
+                    @if (secCheck)
+                    {
+                        <span class="black_text">Sec</span>
+
+                        <span class="yellow_text">Auto</span>
+                    }
+                    else
+                    {
+                        <span class="black_text">@Model.Brand</span>
+                    }
+                </span>
+            </div>
+            <div class="detail_info">@Model.Id</div>
+            <div class="detail_info">@Model.Model</div>
+            <div class="detail_info">@Model.ConsumableType.GetDisplayName()</div>
+            <div class="detail_info">@Model.Subcategory.GetDisplayName()</div>
+            <div class="detail_info">@Model.Country</div>
+            <div class="detail_info">@Model.Year</div>
+        </div>
+    </div>
+
+    <div class="details_third">
+        <div class="details_card_img_container">
+            <img class="card_img" src="@Model.PhotoPath">
+        </div>
+        <div class="item_main details_image">
+            <div class="item_price_container mini_container">
+                <div>
+                    <span class="item_price">$@Model.Price</span>
+                    <a class="item_favourite_icon" href=""></a>
+                </div>
+                <div class="price_cashback">
+                    <span class="price_cashback_text">Cashback $@cashbackValue</span>
+                </div>
+                @if (available)
+                {
+                    <a class="buy_button mini_chart" href="">
+                        <span class="mini_buy_button_text">Buy</span>
+                    </a>
+                }
+                else
+                {
+                    <a class="buy_button mini_chart buy_button_inactive" disabled>
+                        <span class="mini_buy_button_text">Buy</span>
+                    </a>
+                }
+                <section class="item_undername">
+                    @if (available)
+                    {
+                        @if (admin)
+                        {
+                            <div class="available_item">Available - @Model.Quantity</div>
+                        }
+                        else
+                        {
+                            <div class="available_item">Available</div>
+                        }
+                    }
+                    else
+                    {
+                        @if (admin)
+                        {
+                            <div class="unavailable_item">Unavailable - @Model.Quantity</div>
+                        }
+                        else
+                        {
+                            <div class="unavailable_item">Unavailable</div>
+                        }
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

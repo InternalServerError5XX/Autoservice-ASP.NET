@@ -1,0 +1,98 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.ViewModels.Car;
+@model CarViewModel;
+
+@{    
+    var title = "";
+    if (Model?.Id == null)
+    {
+        title = "CreateCar";
+        ViewData["Title"] = title;
+    }
+    else
+    {
+        title = "Edit";
+        ViewData["Title"] = title;
+    }
+}
+
+<body>
+    <main>   
+        <div id="modal_save" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <span class="confirmation_title">Are you sure?</span>
+                <div class="confirmation_buttons">
+                    @if (title == "Edit")
+                    {
+                        <a class="confirmSave" id="confirmDelete_item" asp-controller="Car"
+                        asp-action="Save" asp-route-id="@Model.Id">Confirm</a>
+                    }
+                    else
+                    {
+                        <a class="confirmSave" id="confirmDelete_item" asp-controller="Car"
+                           asp-action="Save">Confirm</a>
+                    }
+                    <button class="confirmCancel" id="confirmCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <form id="saveform" asp-controller="Car" asp-action="Save">
+            <div class="save_form">
+                <div class="save_input_container">
+                    <label class="saveform_label">
+                        <span class="saveform_title">@title</span>
+                    </label>
+                    <input class="saveform_image" type="file">
+                </div>
+                <div class="saveform_info">
+                    <div class="saveform_row">
+                        <div class="save_input_container">
+                            <label asp-for="@Model.Id" class="saveform_label">ID</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Id" disabled>
+                        </div>                       
+                        <div class="form-group col-md-6">
+                            <label asp-for="@Model.CarType" class="saveform_label">Car Type</label>
+                            <select asp-for="@Model.CarType" class="saveform_input" id="carTypeId">
+                                @foreach (var carType in Enum.GetValues(typeof(CarType)))
+                                {
+                                    <option value="@carType">@carType</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="saveform_row">
+                        <div class="save_input_container">
+                            <label asp-for="@Model.Name" class="saveform_label">Name</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Name">
+                        </div>
+                        <div class="save_input_container">
+                            <label asp-for="@Model.Model" class="saveform_label">Model</label>
+                            <input class="saveform_input" asp-for="@Model.Model" />
+                        </div>                        
+                    </div>
+                    <div class="saveform_row">
+                        <div class="save_input_container">
+                            <label asp-for="@Model.Speed" class="saveform_label">Speed</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Speed">
+                        </div>
+                        <div class="save_input_container">
+                            <label asp-for="@Model.Price" class="saveform_label">Price</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Price" />
+                        </div>
+                    </div>                   
+                    <div class="save_input_container">
+                        <label asp-for="@Model.Description" class="textare_label">Description</label>
+                        <textarea type="text" class="saveform_textarea" asp-for="@Model.Description"></textarea>
+                    </div>     
+                    <div class="saveform_buttons">
+                        <a class="cancel_button" href="javascript:history.back()">Cancel</a>
+                        <button class="save_button" id="openModal">Save</button>                       
+                    </div>
+                </div>               
+            </div>            
+        </form>
+    </main>
+</body>

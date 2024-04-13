@@ -1,0 +1,26 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions
+
+@{
+    Layout = "_ServiceLayout";
+    ViewData["Title"] = @ServiceType.Electricity_Service.GetDisplayName();
+}
+
+<section>
+    <div class="service_container">
+        <div class="service_column">
+            <div>
+                <div class="services_ul">
+                    <ul>
+                        <li class="service_li">Solving problems with auto electricity</li>
+                        <li class="service_li">Searching for short circuits and breaks</li>
+                        <li class="service_li">Restoration of the on-board electrical network</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div>
+            <img class="service_img_bigg" src="~/img/site/electricity_service.png" alt="Electricity service" />
+        </div>
+    </div>
+</section>

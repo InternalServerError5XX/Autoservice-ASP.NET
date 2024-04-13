@@ -1,0 +1,55 @@
+﻿@using Automarket.Domain.ViewModels.Account;
+@model SignupViewModel;
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="~/img/site/automarket_1.jpg">
+
+@{
+    Layout = null;
+    bool validationErrors = ViewData.ModelState.Values.Any(e => e.Errors.Any());
+    <title>Signup - Automarket</title>
+}
+
+
+<body>
+    <div class="vertical_stripe"></div>
+    <main>        
+        <div class="login_container">
+            @if (validationErrors)
+            {
+                <div class="validating_container" asp-validation-summary="All"></div>
+            }
+            <h2 class="login_title">Create your Account</h2>
+            <h4 class="lower_login_text">
+                Since this is your first trip, you will need to provide
+                <br>us some information before we can start</br>
+            </h4>
+            <img class="signup_car" src="~/img/site/signup_car.png" alt="Form car" />
+            <form class="login_form" asp-controller="Account" asp-action="Signup">
+                <div class="input_container login_input">
+                    <input asp-for="Email" 
+                    type="email" id="email" name="email" placeholder="email@gmail.com" />
+                </div>
+                <div class="input_container login_input">
+                    <input asp-for="Name"
+                           type="text" id="name" name="name" placeholder="Name" />
+                </div>
+                <div class="input_container login_input">
+                    <input asp-for="Password" 
+                    type="password" id="password" name="password" placeholder="Password" />
+                </div>
+                @* <div class="input_container login_input">
+                    <input asp-for="RepeatPassword" 
+                    type="password" id="repeat_password" name="repeatPassword" placeholder="Repeat password" />
+                </div> *@
+                <a class="form_link" asp-controller="Account" asp-action="Login">
+                    <span>Already have an account?</span>
+                </a>
+                <button class="submit_login" type="submit" runat="server" Text="Submit">Sign up</button>
+            </form>
+        </div>
+    </main>
+</body>

@@ -1,0 +1,73 @@
+﻿@using Automarket.Domain.Entity;
+@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions;
+@using Automarket.Domain.ViewModels.ConsumableViewModel;
+@model ConsumableViewModel;
+
+@{
+    var title = $"Info - {Model.Brand} {Model.Model}";
+    ViewData["Title"] = title;
+
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+    bool secCheck = Model.Brand.Contains("SecAuto");
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
+}
+
+<body>
+    <main>
+        <div class="consumables_container">
+            <section>
+                <div class="pages_path">
+                    <a class="home_icon" asp-controller="Home" asp-action="Index"></a>
+                    <a class="path_current_page" asp-controller="Consumable" asp-action="GetItems">Consumables</a>
+                    <a class="path_current_page inactive">@Model.Brand @Model.Model</a>
+                </div>
+            </section>
+
+            <section>
+                <div class="admin_item_pannel">
+                    <div class="item_selector">
+                        <a id="about_tab" class="item_selector_option active-tab" data-tab="about">About</a>
+                        <a id="details_tab" class="item_selector_option" data-tab="details">Details</a>
+                    </div>
+                    @if (admin)
+                    {
+                        <div class="admin_item_buttons">
+                            <a class="edit_item" asp-controller="Consumable" asp-action="EditItem" asp-route-id="@Model.Id">Edit</a>
+                            <a class="delete_item delete_items_button" data-items-id="@Model.Id">
+                                <span>Delete</span>
+                            </a>
+                        </div>
+                    }
+                </div>
+                <hr class="item_selector_hr" />
+            </section>
+
+            <section id="about_content">
+                @Html.Partial("Partial Views/_AboutContent")
+            </section>
+
+            <section id="details_content">
+                @Html.Partial("Partial Views/_DetailsContent")
+            </section>
+        </div>
+    </main>
+</body>

@@ -1,0 +1,27 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions
+
+@{
+    Layout = "_ServiceLayout";
+    ViewData["Title"] = @ServiceType.Computer_Diagnostics_Service.GetDisplayName();
+}
+
+<section>
+    <div class="service_container">
+        <div class="service_column">
+            <div class="services_ul">
+                <ul>
+                    <li class="service_li">Checking the engine and its electronic systems</li>
+                    <li class="service_li">Automatic transmission check</li>
+                    <li class="service_li">Suspension inspection</li>
+                    <li class="service_li">Computer fitness check</li>
+                    <li class="service_li">Professional diagnostics of all nodes</li>
+                </ul>
+            </div>           
+        </div>
+        <div class="service_img_container">
+            <img class="service_img_bigg" src="~/img/site/computerdiagnostics_service.png"
+                 alt="Computer diagnostics service" />
+        </div>
+    </div>
+</section>

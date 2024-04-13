@@ -1,0 +1,263 @@
+﻿@using Automarket.Domain.ViewModels.Car;
+@model CarViewModel;
+
+@{
+    var title = $"Info - {Model.Name} {Model.Model}";
+    ViewData["Title"] = title;
+
+    bool secCheck = Model.Model.Contains("Mazda");
+    double cashback = 2;
+    double cashbackValue = (double)Model.Price * cashback / 100;
+
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+
+    var itemCount = 1;
+    bool available = false;
+
+    if (itemCount > 0)
+    {
+        available = true;
+    }
+    else
+    {
+        available = false;
+    }
+}
+
+<body>
+    <main>        
+        <div class="consumables_container">
+            <section>
+                <div class="pages_path">
+                    <a class="home_icon" asp-controller="Home" asp-action="Index"></a>
+                    <a class="path_current_page" asp-controller="Car" asp-action="GetCars">Consumables</a>
+                    <a class="path_current_page inactive">@Model.Model</a>
+                </div>
+            </section>
+
+            <section>               
+                <div class="admin_item_pannel">
+                    <div class="item_selector">
+                        <a id="about_tab" class="item_selector_option active-tab" data-tab="about">About</a>
+                        <a id="details_tab" class="item_selector_option" data-tab="details">Details</a>
+                    </div>
+                    @if (admin)
+                    {
+                        <div class="admin_item_buttons">
+                            <a class="edit_item" asp-controller="Car" asp-action="Save" asp-route-id = "@Model.Id">Edit</a>
+                            <a class="delete_item" data-account-id="@Model.Id">
+                                <span>Delete</span>
+                            </a>
+
+                            <div id="modal_delete_@Model.Id" class="modal">
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <span class="confirmation_title">Are you sure?</span>
+                                    <div class="confirmation_buttons">
+                                        <a class="confirmSave" asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id">Confirm</a>
+                                        <button class="confirmCancel">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <hr class="item_selector_hr"/>
+            </section>
+
+            <section id="about_content">
+                <div class="item_information">
+                    <div class="item_photo"> 
+                        <section class="vendor_selector">
+                            @if (secCheck)
+                            {
+                                <button class="secauto_production">SecAuto production</button>
+                            }
+                            else
+                            {
+                                <button class="parthners_production">Partners' production</button>
+                            }
+                        </section>
+
+                        <img class="item_img" src="~/img/site/new_car.png">
+                    </div>
+                    <div class="item_info">
+                        <h3 class="item_info_name">@Model.Name @Model.Model</h3>
+                        <section class="item_undername">
+                            @if (available)
+                            {
+                                @if (admin)
+                                {
+                                    <div class="available_item">Available - @itemCount</div>
+                                }
+                                else
+                                {
+                                    <div class="available_item">Available</div>
+                                }
+                            }
+                            else
+                            {
+                                @if (admin)
+                                {
+                                    <div class="unavailable_item">Unavailable - @itemCount</div>
+                                }
+                                else
+                                {
+                                    <div class="unavailable_item">Unavailable</div>
+                                }
+                            }
+                            <span class="code_text">Code: @Model.Id</span>
+                        </section>
+                        <div class="item_card_container">
+                            <div class="logo">
+                                <span class="seller_title">Seller: </span>                               
+                                <span class="seller_text">
+                                    @if (secCheck)
+                                    {
+                                        <span class="black_text">Sec</span><span class="yellow_text">Auto</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="black_text">@Model.Name</span>
+                                    }
+                                </span>
+                                <hr class="item_info_hr"/>
+                            </div>
+                            <div class="item_main">
+                                <div class="item_price_container">
+                                    <div>
+                                        <span class="item_price">$@Model.Price</span>
+                                        <a class="item_favourite_icon" href=""></a>
+                                    </div>
+                                    <div class="price_cashback">
+                                        <span class="price_cashback_text">Cashback $@cashbackValue</span>
+                                    </div>
+                                </div>
+                                <a class="buy_button" href="">
+                                    <span class="buy_button_text">Buy</span>
+                                </a>
+                            </div>
+                        </div>                       
+
+                        <div class="item_warranty_container">
+                            <div class="warranty_container">
+                                <div class="item_warranty">
+                                    <span class="item_card_title">Warranty: </span>
+                                    <span class="item_card_text">14-day official guarantee from SecAuto 
+                                        Exchange/return of goods within 14 days
+                                    </span>
+                                </div>
+                            </div>
+                            <hr class="warranty_hr" />
+                            <div class="payment_container">
+                                <div class="item_payment">
+                                    <div>
+                                        <span class="item_card_title">Payment: </span>
+                                        <span class="item_card_text">
+                                            Payment by card in the branch, Google Pay, Online card, Cashless for legal entities,
+                                            Pay online with the "Baby Package" social card, Cashless for individuals,
+                                            Apple Pay, Pay online with the "eSupport" card, Visa, Mastercard
+                                        </span>
+                                        <div class="payment_icons">
+                                            <img class="payment_icon" src="~/img/site/visa_icon.png"/>
+                                            <img class="payment_icon" src="~/img/site/mastercard_icon.png" />
+                                            <img class="payment_icon" src="~/img/site/applepay_icon.png" />
+                                            <img class="payment_icon" src="~/img/site/googlepay_icon.png" />
+                                            <img class="payment_icon privat24" src="~/img/site/p24_icon.png" />
+                                            <img class="payment_icon cash" src="~/img/site/cash_icon.png"/>
+                                            <img class="payment_icon cash" src="~/img/site/cashless_icon.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>
+                </div>
+            </section>
+
+            <section id="details_content">  
+                <hr class="details_hr" />
+                <div class="details_columns">
+                    <div class="details_text">
+                        <span class="details_title">Characteristics</span>                       
+                        <div class="details_first">
+                            <div class="detail_title">Seller:</div>
+                            <div class="detail_title">Code:</div>
+                            <div class="detail_title">Name:</div>
+                            <div class="detail_title">Model:</div>
+                            <div class="detail_title">Speed:</div>
+                            <div class="detail_title">CarType:</div>
+                            <div class="detail_title">Description:</div>
+                        </div>
+
+                        <div class="details_second">
+                            <div class="logo details_logo">
+                                <span class="seller_text">
+                                    @if (secCheck)
+                                    {
+                                        <span class="black_text">Sec</span>
+
+                                        <span class="yellow_text">Auto</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="black_text">@Model.Name</span>
+                                    }
+                                </span>
+                            </div>
+                            <div class="detail_info">@Model.Id</div>
+                            <div class="detail_info">@Model.Name</div>
+                            <div class="detail_info">@Model.Model</div>
+                            <div class="detail_info">@Model.Speed km/h</div>
+                            <div class="detail_info">@Model.CarType</div>
+                            <div class="detail_info">@Model.Description</div>
+                        </div>
+                    </div>
+
+                    <div class="details_third">
+                        <img class="details_img" src="~/img/site/new_car.png">
+                        <div class="item_main details_image">
+                            <div class="item_price_container mini_container">
+                                <div>
+                                    <span class="item_price">$@Model.Price</span>
+                                    <a class="item_favourite_icon" href=""></a>
+                                </div>
+                                <div class="price_cashback">
+                                    <span class="price_cashback_text">Cashback $@cashbackValue</span>
+                                </div>
+                                <a class="buy_button mini_chart" href="">
+                                    <span class="mini_buy_button_text">Buy</span>
+                                </a>
+                                <section class="item_undername">
+                                    @if (!available)
+                                    {
+                                        @if (admin)
+                                        {
+                                            <div class="available_item">Available - @itemCount</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="available_item">Available</div>
+                                        }                                       
+                                    }
+                                    else
+                                    {
+                                        @if (admin)
+                                        {
+                                            <div class="unavailable_item">Unavailable - @itemCount</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="unavailable_item">Unavailable</div>
+                                        }                                       
+                                    }
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</body>

@@ -1,0 +1,60 @@
+﻿@using Automarket.Domain.Entity
+@using Automarket.Domain.Enum;
+@using System.Text.RegularExpressions;
+@using Automarket.Domain.Enum.ConsumableType;
+@using Automarket.Domain.Extensions
+@using Automarket.Domain.ViewModels.AdminPanel;
+
+
+@{
+    ViewData["Title"] = "Admin Panel";
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
+}
+
+<main>
+    <div class="consumables_container">
+        <section class="admin_selector">
+            <div class="item_selector">
+                <a id="appointmentsTab" class="item_selector_option active-tab" data-tab="appointments">Appointments</a>
+                <a id="usersTab" class="item_selector_option" data-tab="users">Users</a>
+                <a id="itemsTab" class="item_selector_option" data-tab="items">Items</a>
+                <a id="servicesTab" class="item_selector_option" data-tab="services">Services</a>
+            </div>
+            <hr class="item_selector_hr" />
+        </section>
+
+        <section id="appointments_content">
+            @Html.Partial("Partial Views/_AppointmentsContent")
+        </section>
+
+        <section id="users_content">
+            @Html.Partial("Partial Views/_UsersContent")
+        </section>
+
+        <section id="items_content">
+            @Html.Partial("Partial Views/_ItemsContent")
+        </section>
+
+        <section id="services_content">
+            @Html.Partial("Partial Views/_ServicesContent")
+        </section>       
+    </div>
+</main>

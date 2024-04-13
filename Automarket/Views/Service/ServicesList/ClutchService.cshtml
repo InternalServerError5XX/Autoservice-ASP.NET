@@ -1,0 +1,26 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions
+
+@{
+    Layout = "_ServiceLayout";
+    ViewData["Title"] = @ServiceType.Clutch_Service.GetDisplayName();
+}
+
+<section>
+    <div class="service_container">
+        <div class="service_column">
+            <div class="services_ul">
+                <ul>
+                    <li class="service_li">Leak test</li>
+                    <li class="service_li">Checking the damper flywheel</li>
+                    <li class="service_li">Checking and adjusting the wear of discs</li>
+                    <li class="service_li">Checking the release bearing</li>
+                    <li class="service_li">Checking feredo wear</li>
+                </ul>
+            </div>           
+        </div>
+        <div>
+            <img class="service_img_bigg" src="~/img/site/clutch_service.png" alt="Clutch service" />
+        </div>
+    </div>
+</section>

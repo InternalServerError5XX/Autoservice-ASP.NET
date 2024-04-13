@@ -1,0 +1,206 @@
+﻿@using Automarket.Domain.Entity;
+@using Automarket.Domain.Enum;
+@using Automarket.Domain.ViewModels.Account;
+@using System.Text.RegularExpressions;
+@model AccountViewModel
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="~/img/site/automarket_1.jpg">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/layout.js" asp-append-version="true"></script>
+<script src="/js/profile.js" asp-append-version="true"></script>
+@{
+    Layout = "_EmptyLayout";
+    ViewData["Title"] = "Change Profile";
+    bool validationErrors = ViewData.ModelState.Values.Any(e => e.Errors.Any());
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+                console.log("Success alert displayed");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+                console.log("Error alert displayed");
+            </script>
+        }
+    }
+}
+
+<body>
+    <div class="profile_header">
+        <div class="back_container">
+            <a class="back_link" asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Id">
+                <img class="back_button" src="~/img/site/back_icon1.png" alt="Back button" />
+                <span class="back_text">Profile</span>
+            </a>
+        </div>
+        <div class="user_container">
+            <img class="user_icon" src="~/img/site/user_icon.png" alt="User icon" />
+            <span class="username_text">@Model.Username</span>
+        </div>
+    </div>
+
+    <main class="profile_container">
+        <div class="copy_alert" id="copyAlert">
+            <div>
+                <span class="copy_alert_text">The link copied to clipboard</span>
+                <span id="closeCopyAlert" class="close_copy">&times;</span>
+            </div>
+        </div>
+
+        <div class="profile_bg"></div>
+        <div class="white_bg"></div>       
+        <div class="user_information_container">
+            <div class="user_information1">
+                <div class="settings_upper">
+                    <h2 class="profile_title">Credentials editing</h2>  
+                    <button class="save_profile_button" type="submit" data-account-id="@Model.Id">
+                        <span class="settings_text">Save</span>
+                    </button>
+                    @if (validationErrors)
+                    {
+                        <div class="validating_container accountedit_validation" asp-validation-summary="All"></div>
+                    }
+                </div>
+                <h3 class="user_title">User information</h3>
+                <div class="user_information">
+                    <form asp-controller="Account" asp-action="ChangeProfile" asp-route-id="@Model.Id" method="post" id="profileForm">
+                        <div class="input_column">
+                            <div>
+                                <label class="profile_label" for="Email">Login</label>
+                                <input class="profile_input" asp-for="Email" type="email" name="Email" readonly />
+                                <input type="hidden" asp-for="Email" name="Email" />
+                            </div>
+                            <div>
+                                <label class="profile_label" for="Username">Username</label>
+                                <input class="profile_input" asp-for="Username" type="text" name="Username" />
+                            </div>
+                        </div>
+                        <div class="input_column">
+                            <div>
+                                <label class="profile_label" for="Name">First name</label>
+                                <input class="profile_input" asp-for="Name" type="text" name="Name" />
+                            </div>
+                            <div>
+                                <label class="profile_label" for="Lastname">Last name</label>
+                                <input class="profile_input" asp-for="Lastname" type="text" name="Lastname" />
+                            </div>
+                        </div>
+                        <div class="input_column">
+                            <div>
+                                <label class="profile_label" for="Age">Age</label>
+                                <input class="profile_input" asp-for="Age" type="number" name="Age" min="12" max="120" />
+                            </div>
+                            @if (admin)
+                            {
+                                <div>
+                                    <label class="profile_label" for="Role">Role</label>
+                                    <select class="profile_input" asp-for="@Model.Role">
+                                        @foreach (var role in Enum.GetValues(typeof(Role)))
+                                        {
+                                            <option value="@role">@role</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <label class="profile_label" for="Role">Role</label>
+                                    <input class="profile_input" asp-for="Role" type="text" name="Role" readonly />
+                                    <input type="hidden" asp-for="Role" name="Role" />
+                                </div>
+                            }                           
+                        </div>                       
+                    </form>
+                </div>
+
+            </div>
+            <div class="user_information2">
+                <div class="short_information">
+                    <img class="user_avatar" src="~/img/site/user_icon.png" alt="User icon" />
+                    <div class="hr_separator"></div>
+                    <div class="short_container">
+                        <div class="info_line">
+                            <span class="short_label">Services status:</span>
+                            <span class="short_text">You have 1 current services</span>
+                            <a class="check_services_button" asp-controller="Home" asp-action="Index">
+                                <span class="settings_text">Check</span>
+                            </a>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="profile_buttons_container">
+                    <div class="profile_buttons">
+                        <button id="openShare" class="invite_button">
+                            <span class="settings_text">Share</span>
+                        </button>
+
+                        <div id="myModal" class="modal_share">
+                            <div class="share_content">
+                                <span id="closeModalButton" class="close_share">&times;</span>
+                                <h2 class="form_title">Share the link</h2>
+                                <hr class="share_hr" />
+                                <span class="share_text">Share</span>
+                                <div class="socialmedia_list">
+                                    <a class="share_item" id="telegramShareButton" target="blank">
+                                        <img class="socialmedia_icon" src="~/img/site/telegram_icon.png" alt="telegram" get_socialmedia="telegram" />
+                                        <span>Telegram</span>
+                                    </a>
+                                    <a class="share_item" id="instagramShareButton" target="blank">
+                                        <img class="socialmedia_icon" src="~/img/site/instagram_icon.png" alt="instagram" get_socialmedia="instagram" />
+                                        <span>Instagram</span>
+                                    </a>
+                                    <a class="share_item" id="twitterShareButton" target="blank">
+                                        <img class="socialmedia_icon" src="~/img/site/twitter_icon.png" alt="twitter" get_socialmedia="twitter" />
+                                        <span>Twitter</span>
+                                    </a>
+                                    <a class="share_item" id="facebookShareButton" target="blank">
+                                        <img class="socialmedia_icon" src="~/img/site/facebook_icon1.png" alt="facebook" get_socialmedia="facebook" />
+                                        <span>Facebook</span>
+                                    </a>
+                                    <a class="share_item" id="viberShareButton" target="blank">
+                                        <img class="socialmedia_icon" src="~/img/site/viber_icon.png" alt="viber" get_socialmedia="viber" />
+                                        <span>Viber</span>
+                                    </a>
+                                    <a class="share_item" id="whatsappShareButton" target="blank">
+                                        <img class="socialmedia_icon" src="~/img/site/whatsapp_icon.png" alt="whatsapp" get_socialmedia="whatsapp" />
+                                        <span>WhatsApp</span>
+                                    </a>
+                                </div>
+                                <hr class="share_hr" />
+                                <input class="share_input" type="text" id="invitationLink" readonly>
+                                <button class="copy_button" id="copyLinkButton">
+                                    <span class="settings_text">Copy</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <a class="logout_button" asp-controller="Home" asp-action="Index">
+                            <span class="settings_text">Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
