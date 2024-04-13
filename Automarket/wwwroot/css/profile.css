@@ -370,7 +370,7 @@
 .input_column {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2.5vh;
+    margin-bottom: 1.2vh;
 }
 
 .profile_input {
