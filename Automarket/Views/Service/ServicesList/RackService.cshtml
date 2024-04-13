@@ -1,0 +1,27 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions
+
+@{
+    Layout = "_ServiceLayout";
+    ViewData["Title"] = @ServiceType.Steering_Rack_Service.GetDisplayName();
+}
+
+<section>
+    <div class="service_container">
+        <div class="service_column">
+            <div class="services_ul">
+                <ul>
+                    <li class="service_li">Replacement of hydraulic oil</li>
+                    <li class="service_li">Checking the oil pressure in the system</li>
+                    <li class="service_li">Check of radial and axial backlashes</li>
+                    <li class="service_li">Rail replacement</li>
+                    <li class="service_li">Rail adaptation</li>
+                    <li class="service_li">Rail restoration</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <img class="service_img_bigg" src="~/img/site/steeringrack_service.png" alt="Steering rack service" />
+        </div>
+    </div>
+</section>

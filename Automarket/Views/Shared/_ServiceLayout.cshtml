@@ -1,0 +1,212 @@
+﻿@using System.Text.RegularExpressions;
+@using Automarket.Service.Interfaces
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Automarket</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/card.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/save.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/service.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/layout.js" asp-append-version="true"></script>
+    <link rel="icon" type="image/x-icon" href="~/img/site/automarket_1.jpg">
+</head>
+
+@inject IAccountService accountService;
+
+@{
+    var response = await accountService.GetIdByEmail();
+    var userId = response.Data;
+    bool authenticated = User.Identity.IsAuthenticated;
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+}
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="" class="dropdown_menu"></a>
+            <a asp-controller="Home" asp-action="Index" class="logo_link">
+                <span class="white_text">Sec</span><span class="yellow_text">Auto</span>
+            </a>
+            @if (admin)
+            {
+                <a asp-controller="Admin" asp-action="Adminpanel" class="adminpanel_button">
+                    <span>Admin Panel</span>
+                </a>
+            }
+        </div>
+
+        <nav class="header_links">
+            <div class="nav_links">
+                @if (authenticated)
+                {
+                    <a class="header_link" asp-controller="Account" asp-action="Login">
+                        <div class="text_icon_container">
+                            <img src="~/img/site/icons8-heart-100.png" alt="favourite icon" class="header_icon" />
+                            <span class="icon_text">Favourite</span>
+                        </div>
+                    </a>
+
+                    <a class="header_link" asp-controller="Basket" asp-action="Basket">
+                        <div class="text_icon_container">
+                            <img src="~/img/site/basket_icon.png" alt="basket icon" class="header_icon" />
+                            <span class="icon_text">Basket</span>
+                        </div>
+                    </a>
+
+                    <a class="header_link" asp-controller="Account" asp-action="Profile" asp-route-id="@userId">
+                        <div class="text_icon_container">
+                            <img src="~/img/site/profile_icon.png" alt="profile icon" class="header_icon" />
+                            <span class="icon_text">Account</span>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <a class="header_link" asp-controller="Account" asp-action="Login">
+                        <div class="text_icon_container">
+                            <img src="~/img/site/icons8-heart-100.png" alt="favourite icon" class="header_icon" />
+                            <span class="icon_text">Favourite</span>
+                        </div>
+                    </a>
+
+                    <a class="header_link" asp-controller="Basket" asp-action="Basket">
+                        <div class="text_icon_container">
+                            <img src="~/img/site/basket_icon.png" alt="basket icon" class="header_icon" />
+                            <span class="icon_text">Basket</span>
+                        </div>
+                    </a>
+
+                    <a class="header_link" asp-controller="Account" asp-action="Login">
+                        <div class="text_icon_container">
+                            <img src="~/img/site/profile_icon.png" alt="profile icon" class="header_icon" />
+                            <span class="icon_text">Account</span>
+                        </div>
+                    </a>
+                }
+            </div>
+        </nav>
+    </header>
+
+    <section>
+        <div class="pages_path service_path">
+            <a class="home_icon" asp-controller="Home" asp-action="Index"></a>
+            <a class="path_current_page" asp-controller="Service" asp-action="Services">Services</a>
+            <a class="path_current_page inactive">@ViewData["Title"]</a>
+        </div>
+    </section>
+
+    <div class="service_column">
+        <h2 class="service_title">
+            @ViewData["Title"]
+        </h2>
+    </div>
+
+    @RenderBody()
+
+    <section class="margin_bottom">
+        @Html.Partial("/Views/AutoService/CreateAppointment.cshtml")
+    </section>   
+
+    <footer class="footer">
+        <div class="footer_container">
+            <div class="logo_footer">
+                <div class="logo">
+                    <a asp-controller="Home" asp-action="Index" class="logo_link">
+                        <span class="white_text">Sec</span><span class="yellow_text">Auto</span>
+                    </a>
+                </div>
+            </div>
+            <div class="separator "></div>
+            <div class="first_column_footer">
+                <ul class="first_ul_footer">
+                    <li class="footer_li">
+                        <a class="white_text" asp-controller="Home" asp-action="About">
+                            <span class="footer_text">About</span>
+                        </a>
+                    </li>
+                    <li class="footer_li">
+                        <a class="white_text">
+                            <span class="footer_text">Products</span>
+                        </a>
+                    </li>
+                    <li class="footer_li"><a href="" class="white_text"><span class="footer_text">Support</span></a></li>
+                </ul>
+                <div class="copyrights"><span class="white_text">© 2023 Secular Coop.</span></div>
+            </div>
+            <div class="second_column_footer">
+                <ul class="second_ul_footer">
+                    <li class="footer_li">
+                        <a href="">
+                            <div class="text-icon_container">
+                                <img src="~/img/site/youtube_icon.png" alt="youtube" class="header_icon" />
+                            </div>
+                        </a>
+                    </li>
+                    <li class="footer_li">
+                        <a href="">
+                            <div class="text-icon_container">
+                                <img src="~/img/site/instagram_icon.png" alt="instagram" class="header_icon" />
+                            </div>
+                        </a>
+                    </li>
+                    <li class="footer_li">
+                        <a href="">
+                            <div class="text-icon_container">
+                                <img src="~/img/site/facebook_icon1.png" alt="facebook" class="header_icon" />
+                            </div>
+                        </a>
+                    </li>
+                    <li class="footer_li">
+                        <a href="">
+                            <div class="text-icon_container">
+                                <img src="~/img/site/telegram_icon.png" alt="telegram" class="header_icon" />
+                            </div>
+                        </a>
+                    </li>
+                    <li class="footer_li">
+                        <a href="">
+                            <div class="text-icon_container">
+                                <img src="~/img/site/viber_icon.png" alt="telegram" class="header_icon" />
+                            </div>
+                        </a>
+                    </li>
+                    <li class="footer_li">
+                        <a href="">
+                            <div class="text-icon_container">
+                                <img src="~/img/site/whatsapp_icon.png" alt="whatsapp" class="header_icon" />
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <div class="copyrights">
+                    <a href="mailto:secular.support@gmail.com" class="white_text">
+                        <span class="footer_text">secular.support@gmail.com</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/cards.js" asp-append-version="true"></script>
+    <script src="~/js/save.js" asp-append-version="true"></script>
+    <script src="~/js/admin.js" asp-append-version="true"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

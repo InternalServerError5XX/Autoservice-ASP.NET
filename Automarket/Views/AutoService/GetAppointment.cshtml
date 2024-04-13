@@ -1,0 +1,185 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Enum.ConsumableType;
+@using Automarket.Domain.ViewModels.ConsumableViewModel;
+@using Automarket.Domain.Extensions
+@using Automarket.Domain.ViewModels.Order;
+@model AppointmentViewModel;
+
+@{
+    ViewData["Title"] = "Appointment details";
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
+}
+
+<body>
+    <main>
+        <form asp-controller="AutoService" asp-action="GetAppointment"
+              method="post" enctype="multipart/form-data" id="saveAppointmentForm">
+            @if (admin)
+            {
+                <div class="save_form">
+                    <div class="save_input_container">
+                        <label class="saveform_label">
+                            <span class="saveform_title">Appointment details</span>
+                        </label>
+                        <div class="saveform_image_preview">
+                            <img class="card_img" src="/img/site/auto-service-hero.svg" id="currentImage">
+                        </div>
+                    </div>
+                    <div class="saveform_info">
+                        <div class="saveform_row">
+                            <div class="save_input_container">
+                                <span asp-validation-for="Id" class="validation_text"></span>
+                                <label asp-for="@Model.Id" class="saveform_label">Appointment Id</label>
+                                <input type="text" class="saveform_input" asp-for="@Model.Id" disabled />
+                            </div>
+                            <div class="save_input_container">
+                                <span asp-validation-for="CreationDate" class="validation_text"></span>
+                                <label asp-for="@Model.CreationDate" class="saveform_label">Creation Date</label>
+                                <input type="datetime-local" class="saveform_input" asp-for="@Model.CreationDate" readonly asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                            </div>
+                        </div>
+                        <div class="saveform_row">
+                            <div class="save_input_container">
+                                <span asp-validation-for="Name" class="validation_text"></span>
+                                <label asp-for="@Model.Name" class="saveform_label">Name</label>
+                                <input type="text" class="saveform_input" asp-for="@Model.Name" />
+                            </div>
+                            <div class="save_input_container">
+                                <span asp-validation-for="AppointmentDate" class="validation_text"></span>
+                                <label asp-for="@Model.AppointmentDate" class="saveform_label">Appointment Date</label>
+                                <input type="datetime-local" class="saveform_input" asp-for="@Model.AppointmentDate" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                            </div>
+                        </div>
+                        <div class="saveform_row">
+                            <div class="save_input_container phone_input">
+                                <span asp-validation-for="PhoneNumber" class="validation_text"></span>
+                                <label asp-for="@Model.PhoneNumber" class="saveform_label">Phone Number</label>
+                                <input type="text" class="saveform_input" asp-for="@Model.PhoneNumber" />
+                            </div>
+                            <div class="save_input_container callback_checkbox">
+                                <input class="custom_checkbox" id="rememberMe" asp-for="CallBack" type="checkbox" value="true" onclick="toggleCallBack()">
+                                <label class="rememberme_label" for="rememberMe"></label>
+                                <span class="rememberme_text">Call me back</span>
+                                <input type="hidden" id="CallBack" asp-for="CallBack" value="false" />
+                            </div>
+                            <div class="save_input_container">
+                                <span asp-validation-for="PhoneNumber" class="validation_text"></span>
+                                <label asp-for="@Model.PhoneNumber" class="saveform_label">Checked</label>
+                                <div class="toggle-button-cover">
+                                    <div class="button-cover">
+                                        <div class="button r" id="button-1">
+                                            <input type="checkbox" asp-for="Checked" class="checkbox" />
+                                            <div class="knobs"></div>
+                                            <div class="layer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="saveform_row">
+                            <div class="save_input_container">
+                                <span asp-validation-for="Description" class="validation_text"></span>
+                                <label asp-for="@Model.Description" class="saveform_label">Description</label>
+                                <textarea class="saveform_input appointment_textarea" asp-for="@Model.Description"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="saveform_buttons">
+                            <a class="cancel_button delete_items_button" id="" data-appointments-id="@Model.Id">Delete</a>
+                            <button class="save_button" id="saveAppointmentSubmit" type="submit">Save</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="save_form">
+                    <div class="save_input_container">
+                        <label class="saveform_label">
+                            <span class="saveform_title">Appointment details</span>
+                        </label>
+                        <div class="saveform_image_preview">
+                            <img class="card_img" src="/img/site/auto-service-hero.svg" id="currentImage">
+                        </div>
+                    </div>
+                    <div class="saveform_info">
+                        <div class="saveform_row">
+                            <div class="save_input_container">
+                                <span asp-validation-for="Id" class="validation_text"></span>
+                                <label asp-for="@Model.Id" class="saveform_label">Appointment Id</label>
+                                <input type="text" class="saveform_input" asp-for="@Model.Id" disabled />
+                            </div>
+                            <div class="save_input_container">
+                                <span asp-validation-for="CreationDate" class="validation_text"></span>
+                                <label asp-for="@Model.CreationDate" class="saveform_label">Creation Date</label>
+                                <input type="datetime-local" class="saveform_input" asp-for="@Model.CreationDate" readonly asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                            </div>
+                        </div>
+                        <div class="saveform_row">
+                            <div class="save_input_container">
+                                <span asp-validation-for="Name" class="validation_text"></span>
+                                <label asp-for="@Model.Name" class="saveform_label">Name</label>
+                                <input type="text" class="saveform_input" asp-for="@Model.Name" readonly />
+                            </div>
+                            <div class="save_input_container">
+                                <span asp-validation-for="AppointmentDate" class="validation_text"></span>
+                                <label asp-for="@Model.AppointmentDate" class="saveform_label">Appointment Date</label>
+                                <input type="datetime-local" class="saveform_input" asp-for="@Model.AppointmentDate" readonly asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                            </div>
+                        </div>
+                        <div class="saveform_row">
+                            <div class="save_input_container">
+                                <span asp-validation-for="PhoneNumber" class="validation_text"></span>
+                                <label asp-for="@Model.PhoneNumber" class="saveform_label">Phone Number</label>
+                                <input type="text" class="saveform_input" asp-for="@Model.PhoneNumber" readonly />
+                            </div>
+                            <div class="save_input_container callback_checkbox">
+                                <input class="custom_checkbox" id="rememberMe" asp-for="CallBack" type="checkbox" value="true" onclick="toggleCallBack()">
+                                <label class="rememberme_label" for="rememberMe"></label>
+                                <span class="rememberme_text">Call me back</span>
+                                <input type="hidden" id="CallBack" asp-for="CallBack" value="false" />
+                            </div>
+                            <div class="save_input_container">
+                                <span asp-validation-for="Checked" class="validation_text"></span>
+                                <label asp-for="@Model.Checked" class="saveform_label">Checked</label>
+                                <input type="text" class="saveform_input" asp-for="@Model.Checked" readonly />
+                            </div>
+                        </div>
+                        <div class="saveform_row">
+                            <div class="save_input_container">
+                                <span asp-validation-for="Description" class="validation_text"></span>
+                                <label asp-for="@Model.Description" class="saveform_label">Description</label>
+                                <textarea class="saveform_input appointment_textarea" asp-for="@Model.Description"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="saveform_buttons">
+                            <a class="cancel_button" href="javascript:history.back()">Cancel</a>
+                            <button class="save_button">Share</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </form>
+    </main>
+</body>

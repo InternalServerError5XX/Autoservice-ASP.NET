@@ -1,0 +1,118 @@
+﻿@using Automarket.Domain.Entity
+@using Automarket.Domain.Enum;
+@using System.Text.RegularExpressions;
+@using Automarket.Domain.Enum.ConsumableType;
+@using Automarket.Domain.Extensions;
+@using Automarket.Domain.ViewModels.AdminPanel;
+@model AdminPanelViewModel
+
+@functions {
+    string GetCategoryClass(ConsumableCategory category)
+    {
+        switch (category)
+        {
+            case ConsumableCategory.Car_Oils:
+                return "oil_type";
+            case ConsumableCategory.Car_Chemistry:
+                return "chemistry_type";
+            case ConsumableCategory.Car_Cosmetics:
+                return "cosmetics_type";
+            default:
+                return "";
+        }
+    }
+}
+
+<div class="adminpanel_container">
+    <h2 class="consumables_title">SecAuto Admin Panel</h2>
+    <a asp-controller="Consumable" asp-action="CreateItem" class="add_item_admin add_account">Add New</a>
+
+    <section>
+        <div class="header_search_form search_account_form">
+            <form class="search_form" onsubmit="event.preventDefault(); searchItemsAdmin();">
+                <input class="search_input search_account" id="itemsSearch" type="text" placeholder="Search...">
+                <button class="search_button" type="submit">Find</button>
+            </form>
+        </div>
+    </section>
+</div>
+
+<table class="users_table">
+    <thead>
+        <tr class="user_info_titles">
+            <th class="user_info user_info_header" id="carOilsHeader">@ConsumableCategory.Car_Oils.GetDisplayName()</th>
+            <th class="user_info user_info_header" id="carChemistryHeader">@ConsumableCategory.Car_Chemistry.GetDisplayName()</th>
+            <th class="user_info user_info_header" id="carCosmeticsHeader">@ConsumableCategory.Car_Cosmetics.GetDisplayName()</th>
+            <th class="user_info user_info_header" id="allItemsHeader">Total items</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="users_info_tr items_info_tr">
+            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Oils))</td>
+            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Chemistry))</td>
+            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Cosmetics))</td>
+            <td class="user_info">@Model.Items.Count()</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="users_table" id="itemsTable">
+    <thead>
+        <tr class="user_info_titles">
+            <th class="user_info">ID</th>
+            <th class="user_info">Brand</th>
+            <th class="user_info">Model</th>
+            <th class="user_info">Price</th>
+            <th class="user_info">Quantity</th>
+            <th class="user_info">Overview</th>
+            <th class="user_info">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itemType in Model.Items.OrderBy(item => item.ConsumableType))
+        {
+            @if (itemType.Quantity == 0)
+            {
+                <tr class="users_info_tr items_info_tr unavalible_admin_item @GetCategoryClass(itemType.ConsumableType)">
+                    <td class="user_info">@itemType.Id</td>
+                    <td class="user_info">@itemType.Brand</td>
+                    <td class="user_info">@itemType.Model</td>
+                    <td class="user_info">@itemType.Price</td>
+                    <td class="user_info">@itemType.Quantity</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Consumable"
+                           asp-action="GetItem" asp-route-id="@itemType.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete_item delete_items_button admin_panel_buttons" data-items-id="@itemType.Id">
+                            <span>Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="users_info_tr items_info_tr @GetCategoryClass(itemType.ConsumableType)">
+                    <td class="user_info">@itemType.Id</td>
+                    <td class="user_info">@itemType.Brand</td>
+                    <td class="user_info">@itemType.Model</td>
+                    <td class="user_info">@itemType.Price</td>
+                    <td class="user_info">@itemType.Quantity</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Consumable"
+                           asp-action="GetItem" asp-route-id="@itemType.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete_item delete_items_button admin_panel_buttons" data-items-id="@itemType.Id">
+                            <span>Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }           
+        }
+    </tbody>
+</table>

@@ -1,0 +1,24 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions
+
+@{
+    Layout = "_ServiceLayout";
+    ViewData["Title"] = @ServiceType.Wheel_Alignment_Service.GetDisplayName();
+}
+
+<section>
+    <div class="service_container">
+        <div class="service_column">
+            <div class="services_ul">
+                <ul>
+                    <li class="service_li">Complex procedure</li>
+                    <li class="service_li">Adjusting the position of the steered wheels</li>
+                    <li class="service_li">Alignment of wheel camber and toe</li>
+                </ul>
+            </div>           
+        </div>
+        <div>
+            <img class="service_img_bigg" src="~/img/site/wheelalignment_service.png" alt="Wheel alignment service" />
+        </div>
+    </div>
+</section>

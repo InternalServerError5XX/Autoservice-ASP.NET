@@ -1,0 +1,131 @@
+﻿.users_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+.user_info_titles {
+    background-color: #999;
+    color: white;
+    font-family: "Poppins";
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.users_info_tr:hover {
+    background-color: #ccc;
+    transition: 0.2s;
+}
+
+.user_info {
+    font-family: "Poppins";
+    font-size: 15px;
+    font-weight: 700;
+    padding: 11px;
+    margin: 0 auto;
+}
+
+.user_info_header {
+    cursor: pointer;
+}
+
+.admin_panel_buttons {
+    padding: 7px 15px;
+}
+
+.adminpanel_username {
+    position: absolute;
+    top: 13vh;
+    right: 70vh;
+}
+
+.adminpanel_container {
+    margin-top: 40px;
+    margin-bottom: 70px;
+}
+
+.account_delete_confirmation {
+    margin-bottom: 50px;
+}
+
+.admin_role, .oil_type {
+    background-color: #ffcccb;
+}
+
+.administrator_role, .chemistry_type {
+    background-color: #c1e1c5;
+}
+
+.mechanic_role, .cosmetics_type {
+    background-color: #cfe2f3;
+}
+
+.user_role {
+    background-color: #f7ebbe;
+}
+
+.unavalible_admin_item {
+    opacity: 0.4;
+}
+
+.add_account {
+    position: absolute;
+    right: 550px;
+}
+
+.search_account_form {
+    margin-top: -15px;
+}
+
+.search_account {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.adminpanel_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.create_user_information {
+    margin: -15px 70px;
+}
+
+.accountedit_validation {
+    position: absolute;
+    top: 160px;
+    right: 845px;
+}
+
+.admin_selector {
+    position: absolute;
+    margin-top: 80px;
+    width: 93.5%;
+}
+
+.validation_text {
+    position: absolute;
+    margin-top: -1vh;
+    font-family: "Poppins";
+    font-weight: 700;
+    font-size: 18px;
+    color: red;
+}
+
+.create_user_title {
+    margin-top: 5vh;
+    font-family: "Poppins";
+    font-weight: 800;
+    font-size: 2.7vh;
+    opacity: 0.5;
+    margin-left: -3vh;
+}
+
+.CallBack_True {
+    background-color: #ffcccb;
+}
+
+

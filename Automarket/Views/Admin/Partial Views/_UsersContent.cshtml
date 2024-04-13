@@ -1,0 +1,94 @@
+﻿@using Automarket.Domain.Entity
+@using Automarket.Domain.Enum;
+@using System.Text.RegularExpressions;
+@using Automarket.Domain.Enum.ConsumableType;
+@using Automarket.Domain.Extensions;
+@using Automarket.Domain.ViewModels.AdminPanel;
+@model AdminPanelViewModel
+
+@functions {
+    string GetRoleClass(Role role)
+    {
+        switch (role)
+        {
+            case Role.Admin:
+                return "admin_role";
+            case Role.Administrator:
+                return "administrator_role";
+            case Role.Mechanic:
+                return "mechanic_role";
+            case Role.User:
+                return "user_role";
+            default:
+                return "";
+        }
+    }
+}
+
+<div class="adminpanel_container">
+    <h2 class="consumables_title">SecAuto Admin Panel</h2>
+    <a asp-controller="Admin" asp-action="CreateAccount" class="add_item_admin add_account">Add New</a>
+
+    <section>
+        <div class="header_search_form search_account_form">
+            <form class="search_form" onsubmit="event.preventDefault(); searchUsers();">
+                <input class="search_input search_account" id="emailSearch" type="text" placeholder="Search...">
+                <button class="search_button" type="submit">Find</button>
+            </form>
+        </div>
+    </section>
+</div>
+
+<table class="users_table">
+    <thead>
+        <tr class="user_info_titles">
+            <th class="user_info user_info_header" id="adminHeader">@Role.Admin</th>
+            <th class="user_info user_info_header" id="administratorHeader">@Role.Administrator</th>
+            <th class="user_info user_info_header" id="mechanicHeader">@Role.Mechanic</th>
+            <th class="user_info user_info_header" id="userHeader">@Role.User</th>
+            <th class="user_info user_info_header" id="allUsersHeader">Total users</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="users_info_tr">
+            <td class="user_info">@(Model.Users.Count(user => user.Role == Role.Admin))</td>
+            <td class="user_info">@(Model.Users.Count(user => user.Role == Role.Administrator))</td>
+            <td class="user_info">@(Model.Users.Count(user => user.Role == Role.Mechanic))</td>
+            <td class="user_info">@(Model.Users.Count(user => user.Role == Role.User))</td>
+            <td class="user_info">@Model.Users.Count()</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="users_table" id="usersTable">
+    <thead>
+        <tr class="user_info_titles">
+            <th class="user_info">ID</th>
+            <th class="user_info">Email</th>
+            <th class="user_info">Role</th>
+            <th class="user_info">Overview</th>
+            <th class="user_info">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userRole in Model.Users.OrderBy(user => user.Role))
+        {
+            <tr class="users_info_tr @GetRoleClass(userRole.Role)">
+                <td class="user_info">@userRole.Id</td>
+                <td class="user_info">@userRole.Email</td>
+                <td class="user_info">@userRole.Role</td>
+                <td>
+                    <a class="edit_items admin_panel_buttons" asp-controller="Account"
+                       asp-action="Profile" asp-route-id="@userRole.Id">
+                        <span>Profile</span>
+                    </a>
+                </td>
+                <td>
+                    <a class="delete_items admin_panel_buttons" data-account-id="@userRole.Id">
+                        <span>Delete</span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,28 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions;
+
+@{
+    Layout = "_ServiceLayout";
+    ViewData["Title"] = @ServiceType.Engine_Service.GetDisplayName();
+}
+
+<section>   
+    <div class="service_container">
+        <div class="service_column">
+            <div class="services_ul">
+                <ul>
+                    <li class="service_li">Visual inspection, computer diagnostics</li>
+                    <li class="service_li">Replacing the piston group and gaskets</li>
+                    <li class="service_li">Compression tests</li>
+                    <li class="service_li">Boost pressure check</li>
+                    <li class="service_li">Check for extra noise</li>
+                    <li class="service_li">Overhaul of the engine</li>
+                    <li class="service_li">Checking antifreeze</li>
+                </ul>
+            </div>          
+        </div>
+        <div>
+            <img class="service_img" src="~/img/site/engine_service.png" alt="Engine service" />
+        </div>
+    </div>
+</section>

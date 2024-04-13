@@ -1,0 +1,116 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Enum.ConsumableType;
+@using Automarket.Domain.ViewModels.ConsumableViewModel;
+@using Automarket.Domain.Extensions
+@model ConsumableViewModel;
+
+@{
+    ViewData["Title"] = "Edit item";
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
+}
+
+<body>
+    <main>
+        <form asp-controller="Consumable" asp-action="EditItem"
+              method="post" enctype="multipart/form-data" id="createConsumableForm">
+            <div class="save_form">
+                <div class="save_input_container">
+                    <span asp-validation-for="Photo" class="validation_text"></span>
+                    <label class="saveform_label">
+                        <span class="saveform_title">Edit item</span>
+                    </label>
+                    <input class="saveform_image" type="file" asp-for="Photo" id="fileEdit" onchange="showImage()">
+                    <div class="saveform_image_preview">
+                        <img class="card_img" src="@Model.PhotoPath" id="currentImage">
+                        <img class="card_img" src="#" id="newImagePreview" style="display: none;">
+                    </div>
+                </div>
+                <div class="saveform_info">
+                    <div class="saveform_row">
+                        <div class="form-group col-md-6">
+                            <span asp-validation-for="ConsumableType" class="validation_text"></span>
+                            <label asp-for="@Model.ConsumableType" class="saveform_label">Consumable Category</label>
+                            <select asp-for="@Model.ConsumableType" class="saveform_input">
+                                @foreach (var type in Enum.GetValues(typeof(ConsumableCategory)))
+                                {
+                                    <option value="@type">@EnumExtension.GetDisplayName((ConsumableCategory)type)</option>
+                                }
+                            </select>
+
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <span asp-validation-for="Subcategory" class="validation_text"></span>
+                            <label asp-for="@Model.Subcategory" class="saveform_label">Consumable Subcategory</label>
+                            <select asp-for="@Model.Subcategory" class="saveform_input">
+                                @foreach (var type in Enum.GetValues(typeof(ConsumableSubcategory)))
+                                {
+                                    <option value="@type">@EnumExtension.GetDisplayName((ConsumableSubcategory)type)</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="saveform_row">
+                        <div class="save_input_container">
+                            <span asp-validation-for="Brand" class="validation_text"></span>
+                            <label asp-for="@Model.Brand" class="saveform_label">Brand</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Brand">
+                        </div>
+                        <div class="save_input_container">
+                            <span asp-validation-for="Model" class="validation_text"></span>
+                            <label asp-for="@Model.Model" class="saveform_label">Model</label>
+                            <input class="saveform_input" asp-for="@Model.Model" />
+                        </div>
+                    </div>
+                    <div class="saveform_row">
+                        <div class="save_input_container">
+                            <span asp-validation-for="Year" class="validation_text"></span>
+                            <label asp-for="@Model.Year" class="saveform_label">Year</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Year">
+                        </div>
+                        <div class="save_input_container">
+                            <span asp-validation-for="Price" class="validation_text"></span>
+                            <label asp-for="@Model.Price" class="saveform_label">Price</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Price" />
+                        </div>
+                    </div>
+                    <div class="saveform_row">
+                        <div class="save_input_container">
+                            <span asp-validation-for="Country" class="validation_text"></span>
+                            <label asp-for="@Model.Country" class="saveform_label">Country</label>
+                            <input type="text" class="saveform_input" asp-for="@Model.Country">
+                        </div>
+                        <div class="save_input_container">
+                            <span asp-validation-for="Quantity" class="validation_text"></span>
+                            <label asp-for="@Model.Quantity" class="saveform_label">Quantity</label>
+                            <input type="number" class="saveform_input" asp-for="@Model.Quantity" />
+                        </div>
+                    </div>
+                    <div class="saveform_buttons">
+                        <a class="cancel_button" href="javascript:history.back()">Cancel</a>
+                        <button class="save_button" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+</body>

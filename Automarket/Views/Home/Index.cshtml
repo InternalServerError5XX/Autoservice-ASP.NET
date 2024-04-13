@@ -1,0 +1,95 @@
+﻿@using Automarket.Domain.Entity;
+
+@{
+    ViewData["Title"] = "Home";
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+}
+
+<body>
+    <main>
+        <div class="mainpage">
+            <div class="mainpage_items">
+                <div class="maipage_text">
+                    <span class="upper_mainpage_text">AutoService</span><br />
+                    <span class="middle_mainpage_text yellow_text">DREAM CARS</span><br />
+                </div>
+                <a class="readmore_button" asp-controller="Home" asp-action="About">
+                    <span class="readmore_text">Read More</span>
+                </a>               
+            </div>
+            <div class="main_layout"></div>
+            <div class="body_color"></div>
+        </div>
+    </main>
+
+    <section>
+        <div class="mainpage_selector">
+            <a class="selector_link" asp-controller="Consumable" asp-action="GetItems">
+                <div class="selector_option">
+                    <div class="image-container">
+                        <img class="selector_img" src="~/img/site/car_details1.jpg" alt="Cars" />
+                    </div>
+                    <span class="selector_text">Consumables</span>
+                </div>
+            </a>
+            <a class="selector_link" asp-controller="Service" asp-action="Services">
+                <div class="selector_option">
+                    <div class="image-container">
+                        <img class="selector_img" src="~/img/site/autoservices.jpg" alt="Services" />
+                    </div>
+                    <span class="selector_text">Services</span>
+                </div>
+            </a>
+        </div>
+    </section>   
+
+    @Html.Partial("/Views/AutoService/CreateAppointment.cshtml")
+
+    <section class="services_section">
+        <h2 class="services_list_title">Complex Car Diagnostics</h2>
+        <h4 class="services_list_decription">Expert diagnosis can prevent breakdowns</h4>
+        <div class="services_content">
+            <ul class="left_services_ul">
+                <img class="circle_icon_first" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Body Inspection</li>
+                <img class="circle_icon_first" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Engine Diagnostics</li>
+                <img class="circle_icon_first" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Turbocharger Diagnostics</li>
+                <img class="circle_icon_first" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Transmission Check</li>
+                <img class="circle_icon_first" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Suspension Diagnosis</li>
+            </ul>
+            <div class="services_list_img">
+                <img class="services_list_img" src="~/img/site/backside_car.jpg" alt="Services list" />
+            </div>
+            <ul class="right_services_ul">
+                <img class="circle_icon_second" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Wheel Alignment</li>
+                <img class="circle_icon_second" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Brake System Inspection</li>
+                <img class="circle_icon_second" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Steering System Inspection</li>
+                <img class="circle_icon_second" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Security System Assessment</li>
+                <img class="circle_icon_second" src="~/img/site/circle_icon.png" alt="Circle icon" />
+                <li>Computerized Diagnostics</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <div class="partner_container">
+            <div class="partner_items">
+                <img class="secular_oil" src="~/img/site/secular_oil.png" alt="Motor oil" />
+                <img class="secular_oil_scaled" src="~/img/site/secular_oil.png" alt="Motor oil" />
+                <div class="partner_text">
+                    <h3 class="partner_title">High-quality motor oil <p>From our partners</p></h3>
+                    <a class="partner_button" href="">SecAuto</a>
+                </div>
+                <img class="motor_icon" src="~/img/site/engine_icon1.png" alt="Engine icon" />
+            </div>
+        </div>
+    </section>
+</body>

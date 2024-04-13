@@ -1,0 +1,27 @@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Extensions
+
+@{
+    Layout = "_ServiceLayout";
+    ViewData["Title"] = @ServiceType.Chassis_Service.GetDisplayName();
+}
+
+<section>
+    <div class="service_container">
+        <div class="service_column">
+            <div class="services_ul">
+                <ul>
+                    <li class="service_li">Inspection and replacement of shock absorbers</li>
+                    <li class="service_li">Inspection of ball bearings, steering tips</li>
+                    <li class="service_li">Diagnostics of silent blocks</li>
+                    <li class="service_li">Diagnostics of the braking system of the car</li>
+                    <li class="service_li">Measurements of the degree of wear of brake pads and disks</li>
+                    <li class="service_li">Replacement of brake pads, discs and drums</li>
+                </ul>
+            </div>           
+        </div>
+        <div>
+            <img class="service_img_bigg" src="~/img/site/chassis_service.png" alt="Chassis service" />
+        </div>
+    </div>
+</section>

@@ -1,0 +1,55 @@
+﻿@using Automarket.Domain.ViewModels.Account;
+@model LoginViewModel;
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="~/img/site/automarket_1.jpg">
+
+@{
+    Layout = null;
+    bool validationErrors = ViewData.ModelState.Values.Any(e => e.Errors.Any());
+    <title>Login - Automarket</title>
+}
+
+
+<body>
+    <div class="vertical_stripe"></div>
+    <main>
+        <div class="login_container">
+            @if (validationErrors)
+            {
+                <div class="validating_container" asp-validation-summary="All"></div>
+            }
+            <h2 class="login_title">Login your Account</h2>
+            <h4 class="lower_login_text">Welcome! To get started, please log in with your
+                <br> existing account credentials</br>
+            </h4>          
+            <img class="form_car" src="~/img/site/form_car1.png" alt="Form car" />
+            <form class="login_form" asp-controller="Account" asp-action="Login">
+                <div class="input_container login_input">
+                    <input asp-for="Email"
+                        type="email" id="email" name="email" placeholder="email@gmail.com" />
+                </div>
+                <div class="input_container">
+                    <input asp-for="Password"
+                        type="password" id="password" name="password" placeholder="Password" />
+                </div>
+                <div class="rememberme_button">
+                    <input class="custom_checkbox" type="checkbox" id="rememberMe" name="rememberMe" value="true">
+                    <label class="rememberme_label" for="rememberMe"></label>
+                    <span class="rememberme_text">Remember me</span>
+                </div>
+                @* <div>
+                    <a class="google_login" href="">Google</a>
+                    <a class="facebook_login" href="">Facebook</a>
+                </div> *@
+                <a class="form_link" asp-controller="Account" asp-action="Signup">
+                    <span>Don`t have an account?</span>
+                </a>
+                <button class="submit_login" type="submit" runat="server" Text="Submit">Login</button>
+            </form>
+        </div>
+    </main>
+</body>
