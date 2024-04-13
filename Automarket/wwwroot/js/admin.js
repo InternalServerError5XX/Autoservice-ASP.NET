@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var completedHeader = document.getElementById("completedHeader");
     var uncompletedHeader = document.getElementById("uncompletedHeader");
     var callbackHeader = document.getElementById("callbackHeader");
-    var allItemsHeader = document.getElementById("allItemsHeader");
+    var allAppointmentsHeader = document.getElementById("allAppointmentsHeader");
     var appointmentsTable = document.getElementById("appointmentsTable");
 
     completedHeader.addEventListener("click", function () {
@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
         filterAppointmentsByType("Waiting for callback");
     });
 
-    allItemsHeader.addEventListener("click", function () {
+    allAppointmentsHeader.addEventListener("click", function () {
         showAllAppointments();
     });
 
