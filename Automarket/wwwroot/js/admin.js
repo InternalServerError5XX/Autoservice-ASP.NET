@@ -269,6 +269,86 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+function searchAppointmentsAdmin() {
+    var input, filter, table, tr, emailTd, idTd, phnumTd, emailTxt, idTxt, phnumTxt, i;
+    input = document.getElementById("appointmentsSearch");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("appointmentsTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+        emailTd = tr[i].getElementsByTagName("td")[1];
+        idTd = tr[i].getElementsByTagName("td")[0];
+        phnumTd = tr[i].getElementsByTagName("td")[3];
+
+        if (emailTd && idTd && phnumTd) {
+            emailTxt = emailTd.textContent || emailTd.innerText;
+            idTxt = idTd.textContent || idTd.innerText;
+            phnumTxt = phnumTd.textContent || phnumTd.innerText;
+
+            if (emailTxt.toUpperCase().indexOf(filter) > -1 || idTxt.toUpperCase() === filter || phnumTxt.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    var completedHeader = document.getElementById("completedHeader");
+    var uncompletedHeader = document.getElementById("uncompletedHeader");
+    var callbackHeader = document.getElementById("callbackHeader");
+    var allItemsHeader = document.getElementById("allItemsHeader");
+    var appointmentsTable = document.getElementById("appointmentsTable");
+
+    completedHeader.addEventListener("click", function () {
+        filterAppointmentsByType("Completed");
+    });
+
+    uncompletedHeader.addEventListener("click", function () {
+        filterAppointmentsByType("Uncompleted");
+    });
+
+    callbackHeader.addEventListener("click", function () {
+        filterAppointmentsByType("Waiting for callback");
+    });
+
+    allItemsHeader.addEventListener("click", function () {
+        showAllAppointments();
+    });
+
+    function filterAppointmentsByType(type) {
+        console.log("Filtering appointments by type: " + type);
+        var rows = appointmentsTable.querySelectorAll(".items_info_tr");
+        for (var i = 0; i < rows.length; i++) {
+            var callbackCheck = rows[i].classList.contains("CallBack_True");
+            var completedCheck = rows[i].classList.contains("Completed");
+
+            if (type === "Completed" && completedCheck) {
+                rows[i].style.display = "";
+            } else if (type === "Uncompleted" && !completedCheck) {
+                rows[i].style.display = "";
+            } else if (type === "Waiting for callback" && callbackCheck && !completedCheck) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+    function showAllAppointments() {
+        var rows = document.querySelectorAll(".items_info_tr");
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].style.display = "";
+        }
+    }
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const appointmentsTab = document.getElementById('appointmentsTab');
     const usersTab = document.getElementById('usersTab');
