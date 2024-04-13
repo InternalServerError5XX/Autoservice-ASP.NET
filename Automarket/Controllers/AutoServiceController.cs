@@ -78,7 +78,7 @@ namespace Automarket.Controllers
                     {
                         TempData["AlertMessage"] = response.Description;
                         TempData["ResponseStatus"] = response.StatusCode.ToString();
-                        return RedirectToAction("GetAppointments", "AutoService", new { id = response.Data.Id });
+                        return RedirectToAction("GetAppointment", "AutoService", new { id = response.Data.Id });
                     }
 
                     TempData["AlertMessage"] = response.Description;

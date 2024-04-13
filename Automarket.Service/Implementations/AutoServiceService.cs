@@ -101,9 +101,8 @@ namespace Automarket.Service.Implementations
             {
                 var _appointment = await _appointmentRepository.GetAll()
                     .FirstOrDefaultAsync(x => x.AppointmentDate == appointment.AppointmentDate);
-                string userEmail = await _accountService.GetUserEmail();
-
-                var _user = await _accountService.GetProfile(userEmail);
+                var response = await _accountService.GetIdByEmail();
+                var userId = response.Data;
 
                 if (_appointment != null)
                 {
@@ -115,7 +114,7 @@ namespace Automarket.Service.Implementations
 
                 var newAppointment = new Appointment
                 {
-                    UserId = _user.Data.Id,
+                    UserId = userId,
                     Name = appointment.Name,
                     PhoneNumber = appointment.PhoneNumber,
                     CallBack = appointment.CallBack,
@@ -183,9 +182,6 @@ namespace Automarket.Service.Implementations
             try
             {
                 var appointment = await _appointmentRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
-                string userEmail = await _accountService.GetUserEmail();
-
-                var _user = await _accountService.GetProfile(userEmail);
 
                 if (appointment == null)
                 {
