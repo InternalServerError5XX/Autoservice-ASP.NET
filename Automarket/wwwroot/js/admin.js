@@ -410,6 +410,6 @@ document.addEventListener('DOMContentLoaded', function () {
         appointmentsTab.classList.remove('active-tab');
         usersTab.classList.remove('active-tab');
         itemsTab.classList.remove('active-tab');
-        usersTab.classList.add('active-tab');
+        servicesTab.classList.add('active-tab');
     });
 });

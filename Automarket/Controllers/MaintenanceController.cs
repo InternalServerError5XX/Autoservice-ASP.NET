@@ -58,13 +58,13 @@ namespace Automarket.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMaintenance(MaintenanceViewModel maintenance)
+        public async Task<IActionResult> CreateMaintenance(MaintenanceViewModel maintenance, long? id)
         {
             if (User.IsInRole("Admin"))
             {
                 if (ModelState.IsValid)
                 {
-                    var response = await _maintenanceService.CreateMaintenance(maintenance);
+                    var response = await _maintenanceService.CreateMaintenance(maintenance, id);
 
                     if (response.StatusCode == Domain.Enum.StatusCode.OK)
                     {

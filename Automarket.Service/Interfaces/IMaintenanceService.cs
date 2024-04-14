@@ -11,7 +11,7 @@ namespace Automarket.Service.Interfaces
 
         Task<BaseResponse<List<Maintenance>>> GetMaintenances();
 
-        Task<BaseResponse<Maintenance>> CreateMaintenance(MaintenanceViewModel maintenance);
+        Task<BaseResponse<Maintenance>> CreateMaintenance(MaintenanceViewModel maintenance, long? id);
 
         Task<BaseResponse<bool>> DeleteMaintenance(long id);
 
