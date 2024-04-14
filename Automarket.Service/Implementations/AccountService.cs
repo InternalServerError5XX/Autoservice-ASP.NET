@@ -59,6 +59,7 @@ namespace Automarket.Service.Implementations
                     Name = model.Name,
                     Password = HashPasswordHelper.HashPassword(model.Password),
                     Role = Role.User,
+                    CreationDate = DateTime.UtcNow,
                 };
 
                 await _userRepository.Create(user);
@@ -103,6 +104,7 @@ namespace Automarket.Service.Implementations
                     };
                 }
 
+                user.LastLogin = DateTime.UtcNow;
                 var result = Authenticate(user);
 
                 return new BaseResponse<ClaimsIdentity>()

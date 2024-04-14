@@ -12,7 +12,6 @@ namespace Automarket.DAL
             Database.EnsureCreated();
         }
 
-        public DbSet<Car> Car { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Consumable> Consumables { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
@@ -34,8 +33,10 @@ namespace Automarket.DAL
                         Name = "Vlad",
                         Lastname = "Linnik",
                         Password = HashPasswordHelper.HashPassword("adminvlad"),
-                        Age = 19,
-                        Role = Role.Admin
+                        Age = 20,
+                        Role = Role.Admin,
+                        CreationDate = DateTime.Now,
+                        LastLogin = DateTime.Now
                     },
                     new User()
                     {
@@ -45,8 +46,10 @@ namespace Automarket.DAL
                         Name = "Dimasik",
                         Lastname = "Hranoskyi",
                         Password = HashPasswordHelper.HashPassword("admindima"),
-                        Age = 19,
-                        Role = Role.Administrator
+                        Age = 20,
+                        Role = Role.Administrator,
+                        CreationDate = DateTime.Now,
+                        LastLogin = DateTime.Now
                     },
                     new User()
                     {
@@ -56,8 +59,10 @@ namespace Automarket.DAL
                         Name = "Andriy",
                         Lastname = "Ishchuk",
                         Password = HashPasswordHelper.HashPassword("mechanicandriy"),
-                        Age = 19,
-                        Role = Role.Mechanic
+                        Age = 20,
+                        Role = Role.Mechanic,
+                        CreationDate = DateTime.Now,
+                        LastLogin = DateTime.Now
                     },
                     new User()
                     {
@@ -67,8 +72,10 @@ namespace Automarket.DAL
                         Name = "Test",
                         Lastname = "User",
                         Password = HashPasswordHelper.HashPassword("testuser"),
-                        Age = 19,
-                        Role = Role.User
+                        Age = 20,
+                        Role = Role.User,
+                        CreationDate = DateTime.Now,
+                        LastLogin = DateTime.Now
                     },
                 });
             });
