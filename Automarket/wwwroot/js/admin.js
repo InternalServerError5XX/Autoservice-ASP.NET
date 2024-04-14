@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/AutoService/DeleteAppointment/' + modalId;
+                    window.location.href = '/Appointment/DeleteAppointment/' + modalId;
                 }
             });
 

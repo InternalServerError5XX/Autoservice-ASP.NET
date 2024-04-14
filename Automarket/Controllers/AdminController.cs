@@ -10,15 +10,15 @@ namespace Automarket.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IAutoServiceService _autoServiceService;
+        private readonly IAppointmentService _appointmentService;
         private readonly IAccountService _accountService;
         private readonly IConsumableService _consumableService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AdminController(IAutoServiceService autoServiceService, IAccountService accountService, 
+        public AdminController(IAppointmentService appointmentService, IAccountService accountService, 
             IHttpContextAccessor httpContextAccessor, IConsumableService consumableService)
         {
-            _autoServiceService = autoServiceService;
+            _appointmentService = appointmentService;
             _accountService = accountService;
             _httpContextAccessor = httpContextAccessor;
             _consumableService = consumableService;
@@ -32,7 +32,7 @@ namespace Automarket.Controllers
                 return RedirectToAction("Forbidden", "Errors");
             }
 
-            var serviceResponse = await _autoServiceService.GetAppointments();
+            var serviceResponse = await _appointmentService.GetAppointments();
             var userResponse = await _accountService.GetUsers();
             var itemResponse = await _consumableService.GetItems();
 

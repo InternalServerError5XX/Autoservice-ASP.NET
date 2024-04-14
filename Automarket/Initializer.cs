@@ -22,7 +22,7 @@ namespace Automarket
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IConsumableService, ConsumableService>();
-            services.AddScoped<IAutoServiceService, AutoServiceService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
         }
     }
 }

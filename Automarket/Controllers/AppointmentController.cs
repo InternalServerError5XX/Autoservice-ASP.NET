@@ -8,22 +8,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Automarket.Controllers
 {
-    public class AutoServiceController : Controller
+    public class AppointmentController : Controller
     {
-        private readonly IAutoServiceService _autoServiceService;
+        private readonly IAppointmentService _appointmentService;
         private readonly IAccountService _accountService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AutoServiceController (IAutoServiceService autoServiceService, IAccountService accountService, IHttpContextAccessor httpContextAccessor)
+        public AppointmentController (IAppointmentService appointmentService, IAccountService accountService, IHttpContextAccessor httpContextAccessor)
         {
-            _autoServiceService = autoServiceService;            
+            _appointmentService = appointmentService;            
             _accountService = accountService;
             _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> GetAppointments()
         {
-            var response = await _autoServiceService.GetAppointments();
+            var response = await _appointmentService.GetAppointments();
 
             if (response.StatusCode == Domain.Enum.StatusCode.OK)
             {
@@ -38,7 +38,7 @@ namespace Automarket.Controllers
 
         public async Task<IActionResult> GetAppointment(long id)
         {
-            var response = await _autoServiceService.GetAppointment(id);
+            var response = await _appointmentService.GetAppointment(id);
 
             if (response.StatusCode == Domain.Enum.StatusCode.OK)
             {
@@ -72,13 +72,13 @@ namespace Automarket.Controllers
                     string userEmail = await _accountService.GetUserEmail();
                     User user = new User { Email = userEmail };
 
-                    var response = await _autoServiceService.CreateAppointment(appointment, user);
+                    var response = await _appointmentService.CreateAppointment(appointment, user);
 
                     if (response.StatusCode == Domain.Enum.StatusCode.OK)
                     {
                         TempData["AlertMessage"] = response.Description;
                         TempData["ResponseStatus"] = response.StatusCode.ToString();
-                        return RedirectToAction("GetAppointment", "AutoService", new { id = response.Data.Id });
+                        return RedirectToAction("GetAppointment", "Appointment", new { id = response.Data.Id });
                     }
 
                     TempData["AlertMessage"] = response.Description;
@@ -97,7 +97,7 @@ namespace Automarket.Controllers
         {
             if (User.IsInRole("Admin"))
             {
-                var response = await _autoServiceService.DeleteAppointment(id);
+                var response = await _appointmentService.DeleteAppointment(id);
 
                 if (response.StatusCode == Domain.Enum.StatusCode.OK)
                 {
@@ -152,14 +152,14 @@ namespace Automarket.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var response = await _autoServiceService.EditAppointment(model.Id, model);
+                    var response = await _appointmentService.EditAppointment(model.Id, model);
 
                     if (response.StatusCode == Domain.Enum.StatusCode.OK)
                     {
                         TempData["AlertMessage"] = response.Description;
                         TempData["ResponseStatus"] = response.StatusCode.ToString();
                         ModelState.AddModelError("", response.Description);
-                        return RedirectToAction("GetAppointment", "AutoService", new { id = model.Id });
+                        return RedirectToAction("GetAppointment", "Appointment", new { id = model.Id });
                     }
 
                     TempData["AlertMessage"] = response.Description;

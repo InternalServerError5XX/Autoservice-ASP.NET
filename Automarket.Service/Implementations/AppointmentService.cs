@@ -15,13 +15,13 @@ using System.Threading.Tasks;
 
 namespace Automarket.Service.Implementations
 {
-    public class AutoServiceService : IAutoServiceService
+    public class AppointmentService : IAppointmentService
     {
         private readonly IBaseRepository<Appointment> _appointmentRepository;
         private readonly IBaseRepository<User> _userRepository;
         private readonly IAccountService _accountService;
 
-        public AutoServiceService (IBaseRepository<Appointment> appointmentRepository, IBaseRepository<User> userRepository, 
+        public AppointmentService (IBaseRepository<Appointment> appointmentRepository, IBaseRepository<User> userRepository, 
             IAccountService accountService)
         {
             _appointmentRepository = appointmentRepository;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Automarket.Service.Interfaces
 {
-    public interface IAutoServiceService
+    public interface IAppointmentService
     {
         Task<BaseResponse<AppointmentViewModel>> GetAppointment(long id);
 
