@@ -152,6 +152,28 @@ namespace Automarket.Service.Implementations
             }
         }
 
+        public async Task<BaseResponse<List<Maintenance>>> GetMaintenances(long id)
+        {
+            try
+            {
+                var maintenances = await _maintenanceRepository.GetAll().Result.Where(x => x.AppointmentId == id).ToListAsync();
+
+                return new BaseResponse<List<Maintenance>>()
+                {
+                    Data = maintenances,
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<List<Maintenance>>()
+                {
+                    Description = $"[GetMaintenances] : {ex.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
         public async Task<BaseResponse<MaintenanceViewModel>> GetMaintenance(long id)
         {
             try

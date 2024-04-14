@@ -26,10 +26,10 @@ namespace Automarket.Controllers
 
         public async Task<IActionResult> Adminpanel()
         {
-            if (!User.IsInRole("Admin"))
-            {
-                return RedirectToAction("Forbidden", "Errors");
-            }
+            //if (!User.IsInRole("Admin"))
+            //{
+            //    return RedirectToAction("Forbidden", "Errors");
+            //}
 
             var serviceResponse = await _appointmentService.GetAppointments();
             var userResponse = await _accountService.GetUsers();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Automarket.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240414211717_NewDB")]
-    partial class NewDB
+    [Migration("20240414224248_MaintenancesUpdate")]
+    partial class MaintenancesUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -123,7 +123,7 @@ namespace Automarket.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("AppointmentId")
+                    b.Property<long?>("AppointmentId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CompletionTime")
@@ -137,6 +137,9 @@ namespace Automarket.DAL.Migrations
 
                     b.Property<int>("Stage")
                         .HasColumnType("int");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -190,9 +193,9 @@ namespace Automarket.DAL.Migrations
                         {
                             Id = 1L,
                             Age = 20,
-                            CreationDate = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6433),
+                            CreationDate = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(6978),
                             Email = "secauto.admin@gmail.com",
-                            LastLogin = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6467),
+                            LastLogin = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7015),
                             Lastname = "Linnik",
                             Name = "Vlad",
                             Password = "80e0cae0c86fc08fce7b5c03dd1229078862ab996042db9f4299bd3e838cda2a",
@@ -203,9 +206,9 @@ namespace Automarket.DAL.Migrations
                         {
                             Id = 2L,
                             Age = 20,
-                            CreationDate = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6491),
+                            CreationDate = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7040),
                             Email = "secauto.administrator@gmail.com",
-                            LastLogin = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6493),
+                            LastLogin = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7042),
                             Lastname = "Hranoskyi",
                             Name = "Dimasik",
                             Password = "f301d9014ab4016549a8bf0947644c81f971f79ffa555eb373a3232c71c8f08b",
@@ -216,9 +219,9 @@ namespace Automarket.DAL.Migrations
                         {
                             Id = 3L,
                             Age = 20,
-                            CreationDate = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6511),
+                            CreationDate = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7060),
                             Email = "secauto.mechanic@gmail.com",
-                            LastLogin = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6513),
+                            LastLogin = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7062),
                             Lastname = "Ishchuk",
                             Name = "Andriy",
                             Password = "7d7401591c213d25d2ca8d65542ca054ecd2fb7ee746094cf4c38acfb42cb744",
@@ -229,9 +232,9 @@ namespace Automarket.DAL.Migrations
                         {
                             Id = 4L,
                             Age = 20,
-                            CreationDate = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6533),
+                            CreationDate = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7079),
                             Email = "secauto.testuser@gmail.com",
-                            LastLogin = new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6534),
+                            LastLogin = new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7081),
                             Lastname = "User",
                             Name = "Test",
                             Password = "4ace4f0a32ae2bcfece96c5b17c8f74f75c7e2c07a2ce7c6e0deba4553e10f90",

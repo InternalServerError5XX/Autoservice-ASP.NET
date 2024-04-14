@@ -10,10 +10,6 @@
 @inject IAccountService accountService;
 @inject IAppointmentService appointmentService;
 
-@{
-
-}
-
 <div class="adminpanel_container">
     <h2 class="consumables_title">SecAuto Admin Panel</h2>
     <a asp-controller="Maintenance" asp-action="CreateMaintenance" class="add_item_admin add_account">Add New</a>
@@ -33,6 +29,9 @@
         <tr class="user_info_titles">
             <th class="user_info user_info_header" id="carOilsHeader">Active</th>
             <th class="user_info user_info_header" id="carChemistryHeader">Completed</th>
+            <th class="user_info user_info_header" id="carChemistryHeader">Pending</th>
+            <th class="user_info user_info_header" id="carChemistryHeader">Diagnostics</th>
+            <th class="user_info user_info_header" id="carChemistryHeader">Service</th>
             <th class="user_info user_info_header" id="allItemsHeader">Total items</th>
         </tr>
     </thead>
@@ -40,6 +39,9 @@
         <tr class="users_info_tr">
             <td class="user_info">@(Model.Services.Count(s => s.Stage != ServiceStage.Done))</td>
             <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Done))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Pending))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Diagnostics))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Service))</td>
             <td class="user_info">@Model.Services.Count()</td>
         </tr>
     </tbody>
@@ -66,9 +68,9 @@
             {
                 <tr class="users_info_tr items_info_tr @(service.Stage == ServiceStage.Done ? "Done_True" : "")">
                     <td class="user_info">@service.Id</td>
-                    <td class="user_info">@appointmentService.GetAppointment(service.AppointmentId).Result.Data.Id</td>
-                    <td class="user_info">@appointmentService.GetAppointment(service.AppointmentId).Result.Data.Name</td>
-                    <td class="user_info">@appointmentService.GetAppointment(service.AppointmentId).Result.Data.PhoneNumber</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Name</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.PhoneNumber</td>
                     <td class="user_info">@service.Stage</td>
                     <td class="user_info">@service.CreationDate</td>
                     <td class="user_info">@service.CompletionTime</td>

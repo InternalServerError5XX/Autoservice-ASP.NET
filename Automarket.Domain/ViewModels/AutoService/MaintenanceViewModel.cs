@@ -12,7 +12,8 @@ namespace Automarket.Domain.ViewModels.AutoService
     public class MaintenanceViewModel
     {
         public long Id { get; set; }
-        public long AppointmentId { get; set; }
+        public long? UserId { get; set; }
+        public long? AppointmentId { get; set; }
 
         [Required(ErrorMessage = "Service stage is required")]
         [EnumDataType(typeof(ServiceStage), ErrorMessage = "Invalid stage.")]

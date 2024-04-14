@@ -10,7 +10,8 @@ namespace Automarket.Domain.Entity
     public class Maintenance
     {
         public long Id { get; set; }
-        public long AppointmentId { get; set; }
+        public long? UserId { get; set; }
+        public long? AppointmentId { get; set; }
         public ServiceStage Stage { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime EditDate { get; set; }

@@ -31,6 +31,21 @@ namespace Automarket.Controllers
             return RedirectToAction("Error", "Errors");
         }
 
+        public async Task<IActionResult> GetMaintenances(long id)
+        {
+            var response = await _maintenanceService.GetMaintenances(id);
+
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return View(response.Data);
+            }
+            else if (response.StatusCode == Domain.Enum.StatusCode.InternalServerError)
+            {
+                return RedirectToAction("InternalServerError", "Errors");
+            }
+            return RedirectToAction("Error", "Errors");
+        }
+
         public async Task<IActionResult> GetMaintenance(long id)
         {
             var response = await _maintenanceService.GetMaintenance(id);

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Automarket.DAL.Migrations
 {
-    public partial class NewDB : Migration
+    public partial class MaintenancesUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,7 +59,8 @@ namespace Automarket.DAL.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AppointmentId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: true),
+                    AppointmentId = table.Column<long>(type: "bigint", nullable: true),
                     Stage = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -96,10 +97,10 @@ namespace Automarket.DAL.Migrations
                 columns: new[] { "Id", "Age", "CreationDate", "Email", "LastLogin", "Lastname", "Name", "Password", "Role", "Username" },
                 values: new object[,]
                 {
-                    { 1L, 20, new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6433), "secauto.admin@gmail.com", new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6467), "Linnik", "Vlad", "80e0cae0c86fc08fce7b5c03dd1229078862ab996042db9f4299bd3e838cda2a", 0, "admin" },
-                    { 2L, 20, new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6491), "secauto.administrator@gmail.com", new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6493), "Hranoskyi", "Dimasik", "f301d9014ab4016549a8bf0947644c81f971f79ffa555eb373a3232c71c8f08b", 1, "administrator" },
-                    { 3L, 20, new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6511), "secauto.mechanic@gmail.com", new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6513), "Ishchuk", "Andriy", "7d7401591c213d25d2ca8d65542ca054ecd2fb7ee746094cf4c38acfb42cb744", 2, "mechanic" },
-                    { 4L, 20, new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6533), "secauto.testuser@gmail.com", new DateTime(2024, 4, 15, 0, 17, 17, 207, DateTimeKind.Local).AddTicks(6534), "User", "Test", "4ace4f0a32ae2bcfece96c5b17c8f74f75c7e2c07a2ce7c6e0deba4553e10f90", 3, "TestUser" }
+                    { 1L, 20, new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(6978), "secauto.admin@gmail.com", new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7015), "Linnik", "Vlad", "80e0cae0c86fc08fce7b5c03dd1229078862ab996042db9f4299bd3e838cda2a", 0, "admin" },
+                    { 2L, 20, new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7040), "secauto.administrator@gmail.com", new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7042), "Hranoskyi", "Dimasik", "f301d9014ab4016549a8bf0947644c81f971f79ffa555eb373a3232c71c8f08b", 1, "administrator" },
+                    { 3L, 20, new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7060), "secauto.mechanic@gmail.com", new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7062), "Ishchuk", "Andriy", "7d7401591c213d25d2ca8d65542ca054ecd2fb7ee746094cf4c38acfb42cb744", 2, "mechanic" },
+                    { 4L, 20, new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7079), "secauto.testuser@gmail.com", new DateTime(2024, 4, 15, 1, 42, 48, 304, DateTimeKind.Local).AddTicks(7081), "User", "Test", "4ace4f0a32ae2bcfece96c5b17c8f74f75c7e2c07a2ce7c6e0deba4553e10f90", 3, "TestUser" }
                 });
         }
 
