@@ -30,9 +30,9 @@ namespace Automarket.DAL.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public IQueryable<Consumable> GetAll()
+        public async Task<IQueryable<Consumable>> GetAll()
         {
-            return _db.Consumables;
+            return await Task.FromResult(_db.Consumables);
         }
 
         public async Task<Consumable> Update(Consumable entity)

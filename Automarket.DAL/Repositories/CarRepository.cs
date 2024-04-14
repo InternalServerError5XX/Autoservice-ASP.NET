@@ -24,9 +24,9 @@ namespace Automarket.DAL.Repositories
             //await _db.SaveChangesAsync();
         }
 
-        public IQueryable<Car> GetAll()
+        public async Task<IQueryable<Car>> GetAll()
         {
-            return _db.Car;
+            return await Task.FromResult(_db.Car);
         }
 
         public async Task Delete(Car entity)

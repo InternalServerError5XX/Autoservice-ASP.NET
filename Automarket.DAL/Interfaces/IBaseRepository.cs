@@ -10,7 +10,7 @@ namespace Automarket.DAL.Interfaces
     {
         Task Create(T entity);
 
-        IQueryable<T> GetAll();
+        Task<IQueryable<T>> GetAll();
 
         Task Delete(T entity);
 
