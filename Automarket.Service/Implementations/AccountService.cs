@@ -45,7 +45,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Email == model.Email);
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Email == model.Email);
                 if (user != null)
                 {
                     return new BaseResponse<ClaimsIdentity>
@@ -85,7 +85,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Email == model.Email);
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Email == model.Email);
                 if (user == null)
                 {
                     return new BaseResponse<ClaimsIdentity>()
@@ -125,7 +125,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Email == model.Email);
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Email == model.Email);
                 if (user == null)
                 {
                     return new BaseResponse<bool>
@@ -159,7 +159,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var profile = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var profile = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (profile == null)
                 {
@@ -202,7 +202,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var profile = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Email == email);
+                var profile = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Email == email);
 
                 if (profile == null)
                 {
@@ -245,7 +245,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var users = await _userRepository.GetAll().ToListAsync();
+                var users = await _userRepository.GetAll().Result.ToListAsync();
 
                 return new BaseResponse<List<User>>()
                 {
@@ -268,7 +268,7 @@ namespace Automarket.Service.Implementations
             try
             {
                 var email = GetUserEmail().Result; 
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Email == email.ToString());
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Email == email.ToString());
 
                 if (user == null)
                 {
@@ -300,7 +300,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Email == model.Email);
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Email == model.Email);
                 if (user != null)
                 {
                     return new BaseResponse<User>
@@ -343,7 +343,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (user == null)
                 {
@@ -384,7 +384,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (user == null)
                 {

@@ -33,7 +33,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointments = await _appointmentRepository.GetAll().ToListAsync();
+                var appointments = await _appointmentRepository.GetAll().Result.ToListAsync();
 
                 return new BaseResponse<List<Appointment>>()
                 {
@@ -55,7 +55,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointment = await _appointmentRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var appointment = await _appointmentRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (appointment == null)
                 {
@@ -100,7 +100,7 @@ namespace Automarket.Service.Implementations
             try
             {
                 var _appointment = await _appointmentRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.AppointmentDate == appointment.AppointmentDate);
+                    .Result.FirstOrDefaultAsync(x => x.AppointmentDate == appointment.AppointmentDate);
                 var response = await _accountService.GetIdByEmail();
                 var userId = response.Data;
 
@@ -147,7 +147,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointment = await _appointmentRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var appointment = await _appointmentRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (appointment == null)
                 {
@@ -181,7 +181,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointment = await _appointmentRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var appointment = await _appointmentRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (appointment == null)
                 {

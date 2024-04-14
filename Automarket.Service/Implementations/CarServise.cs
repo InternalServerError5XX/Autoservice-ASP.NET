@@ -51,7 +51,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var car = await _carRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (car == null)
                 {
@@ -95,7 +95,7 @@ namespace Automarket.Service.Implementations
         {            
             try
             {
-                var cars = await _carRepository.GetAll().ToListAsync();
+                var cars = await _carRepository.GetAll().Result.ToListAsync();
 
                 return new BaseResponse<List<Car>>()
                 {
@@ -186,7 +186,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var car = await _carRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (car == null)
                 {
@@ -222,7 +222,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var car = await _carRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (car == null)
                 {

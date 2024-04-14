@@ -13,14 +13,12 @@ namespace Automarket.Controllers
         private readonly IAppointmentService _appointmentService;
         private readonly IAccountService _accountService;
         private readonly IConsumableService _consumableService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AdminController(IAppointmentService appointmentService, IAccountService accountService, 
-            IHttpContextAccessor httpContextAccessor, IConsumableService consumableService)
+            IConsumableService consumableService)
         {
             _appointmentService = appointmentService;
             _accountService = accountService;
-            _httpContextAccessor = httpContextAccessor;
             _consumableService = consumableService;
 
         }
