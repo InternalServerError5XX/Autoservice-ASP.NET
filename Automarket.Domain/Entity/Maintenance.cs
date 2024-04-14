@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Automarket.Domain.Entity
 {
-    public class Service
+    public class Maintenance
     {
         public long Id { get; set; }
         public long AppointmentId { get; set; }

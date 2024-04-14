@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Automarket.Domain.ViewModels.AutoService
 {
-    public class ServiceViewModel
+    public class MaintenanceViewModel
     {
         public long Id { get; set; }
         public long AppointmentId { get; set; }

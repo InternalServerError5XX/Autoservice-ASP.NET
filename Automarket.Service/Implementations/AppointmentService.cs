@@ -18,14 +18,11 @@ namespace Automarket.Service.Implementations
     public class AppointmentService : IAppointmentService
     {
         private readonly IBaseRepository<Appointment> _appointmentRepository;
-        private readonly IBaseRepository<User> _userRepository;
         private readonly IAccountService _accountService;
 
-        public AppointmentService (IBaseRepository<Appointment> appointmentRepository, IBaseRepository<User> userRepository, 
-            IAccountService accountService)
+        public AppointmentService (IBaseRepository<Appointment> appointmentRepository, IAccountService accountService)
         {
             _appointmentRepository = appointmentRepository;
-            _userRepository = userRepository;
             _accountService = accountService;
         }
 

@@ -16,7 +16,7 @@ namespace Automarket.DAL
         public DbSet<User> User { get; set; }
         public DbSet<Consumable> Consumables { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<Service> Services { get; set; }
+        public DbSet<Maintenance> Maintenances { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
