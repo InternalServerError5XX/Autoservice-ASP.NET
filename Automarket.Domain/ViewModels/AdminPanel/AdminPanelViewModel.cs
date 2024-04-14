@@ -12,6 +12,7 @@ namespace Automarket.Domain.ViewModels.AdminPanel
         public List<User> Users { get; set; }
         public List<Consumable> Items { get; set; }
         public List<Appointment> Appointments { get; set; }
+        public List<Maintenance> Services { get; set; }
     }
 
 }

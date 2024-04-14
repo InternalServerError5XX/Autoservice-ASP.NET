@@ -4,11 +4,19 @@
 @using Automarket.Domain.Enum.ConsumableType;
 @using Automarket.Domain.Extensions;
 @using Automarket.Domain.ViewModels.AdminPanel;
+@using Automarket.Service.Interfaces
 @model AdminPanelViewModel
+
+@inject IAccountService accountService;
+@inject IAppointmentService appointmentService;
+
+@{
+
+}
 
 <div class="adminpanel_container">
     <h2 class="consumables_title">SecAuto Admin Panel</h2>
-    <a asp-controller="Admin" asp-action="CreateAccount" class="add_item_admin add_account">Add New</a>
+    <a asp-controller="Maintenance" asp-action="CreateMaintenance" class="add_item_admin add_account">Add New</a>
 
     <section>
         <div class="header_search_form search_account_form">
@@ -23,18 +31,80 @@
 <table class="users_table">
     <thead>
         <tr class="user_info_titles">
-            <th class="user_info user_info_header" id="carOilsHeader">@ConsumableCategory.Car_Oils.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="carChemistryHeader">@ConsumableCategory.Car_Chemistry.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="carCosmeticsHeader">@ConsumableCategory.Car_Cosmetics.GetDisplayName()</th>
+            <th class="user_info user_info_header" id="carOilsHeader">Active</th>
+            <th class="user_info user_info_header" id="carChemistryHeader">Completed</th>
             <th class="user_info user_info_header" id="allItemsHeader">Total items</th>
         </tr>
     </thead>
     <tbody>
         <tr class="users_info_tr">
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Oils))</td>
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Chemistry))</td>
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Cosmetics))</td>
-            <td class="user_info">@Model.Items.Count()</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage != ServiceStage.Done))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Done))</td>
+            <td class="user_info">@Model.Services.Count()</td>
         </tr>
+    </tbody>
+</table>
+
+<table class="users_table" id="appointmentsTable">
+    <thead>
+        <tr class="user_info_titles">
+            <th class="user_info">ID</th>
+            <th class="user_info">Appointment ID</th>
+            <th class="user_info">Name</th>
+            <th class="user_info">Phone number</th>
+            <th class="user_info">Stage</th>
+            <th class="user_info">Created</th>
+            <th class="user_info">Estimate</th>
+            <th class="user_info">Overview</th>
+            <th class="user_info">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model.Services.OrderBy(service => service.Stage))
+        {
+            @if (service.Stage != ServiceStage.Done)
+            {
+                <tr class="users_info_tr items_info_tr @(service.Stage == ServiceStage.Done ? "Done_True" : "")">
+                    <td class="user_info">@service.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment(service.AppointmentId).Result.Data.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment(service.AppointmentId).Result.Data.Name</td>
+                    <td class="user_info">@appointmentService.GetAppointment(service.AppointmentId).Result.Data.PhoneNumber</td>
+                    <td class="user_info">@service.Stage</td>
+                    <td class="user_info">@service.CreationDate</td>
+                    <td class="user_info">@service.CompletionTime</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Maintenance"
+                           asp-action="GetMaintenance" asp-route-id="@service.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete_item delete_items_button admin_panel_buttons" data-appointments-id="@service.Id">
+                            <span>Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="users_info_tr items_info_tr unavalible_admin_item @(service.Stage == ServiceStage.Done ? "Done_True" : "")">
+                    <td class="user_info">@service.Id</td>
+                    <td class="user_info">Name</td>
+                    <td class="user_info">@service.CreationDate</td>
+                    <td class="user_info">@service.CompletionTime</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Maintenance"
+                           asp-action="GetMaintenance" asp-route-id="@service.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete_item delete_items_button admin_panel_buttons" data-appointments-id="@service.Id">
+                            <span>Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
