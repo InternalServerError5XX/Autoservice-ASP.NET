@@ -16,8 +16,8 @@
 
     <section>
         <div class="header_search_form search_account_form">
-            <form class="search_form" onsubmit="event.preventDefault(); searchUsers();">
-                <input class="search_input search_account" id="emailSearch" type="text" placeholder="Search...">
+            <form class="search_form" onsubmit="event.preventDefault(); searchMaintenancesAdmin();">
+                <input class="search_input search_account" id="maintenancesSearch" type="text" placeholder="Search...">
                 <button class="search_button" type="submit">Find</button>
             </form>
         </div>
@@ -27,12 +27,12 @@
 <table class="users_table">
     <thead>
         <tr class="user_info_titles">
-            <th class="user_info user_info_header" id="carOilsHeader">Active</th>
-            <th class="user_info user_info_header" id="carChemistryHeader">Completed</th>
-            <th class="user_info user_info_header" id="carChemistryHeader">Pending</th>
-            <th class="user_info user_info_header" id="carChemistryHeader">Diagnostics</th>
-            <th class="user_info user_info_header" id="carChemistryHeader">Service</th>
-            <th class="user_info user_info_header" id="allItemsHeader">Total items</th>
+            <th class="user_info user_info_header" id="activeHeader">Active</th>
+            <th class="user_info user_info_header" id="doneHeader">Done</th>
+            <th class="user_info user_info_header" id="pendingHeader">Pending</th>
+            <th class="user_info user_info_header" id="diagnosticsHeader">Diagnostics</th>
+            <th class="user_info user_info_header" id="serviceHeader">Service</th>
+            <th class="user_info user_info_header" id="allMaintenancesHeader">Total items</th>
         </tr>
     </thead>
     <tbody>
@@ -47,7 +47,7 @@
     </tbody>
 </table>
 
-<table class="users_table" id="appointmentsTable">
+<table class="users_table" id="maintenancesTable">
     <thead>
         <tr class="user_info_titles">
             <th class="user_info">ID</th>
@@ -62,11 +62,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var service in Model.Services.OrderBy(service => service.Stage))
+        @foreach (var service in Model.Services.OrderByDescending(service => service.Stage != ServiceStage.Done))
         {
             @if (service.Stage != ServiceStage.Done)
             {
-                <tr class="users_info_tr items_info_tr @(service.Stage == ServiceStage.Done ? "Done_True" : "")">
+                <tr class="users_info_tr items_info_tr @service.Stage">
                     <td class="user_info">@service.Id</td>
                     <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Id</td>
                     <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Name</td>
@@ -89,9 +89,12 @@
             }
             else
             {
-                <tr class="users_info_tr items_info_tr unavalible_admin_item @(service.Stage == ServiceStage.Done ? "Done_True" : "")">
+                <tr class="users_info_tr items_info_tr unavalible_admin_item @service.Stage">
                     <td class="user_info">@service.Id</td>
-                    <td class="user_info">Name</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Name</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.PhoneNumber</td>
+                    <td class="user_info">@service.Stage</td>
                     <td class="user_info">@service.CreationDate</td>
                     <td class="user_info">@service.CompletionTime</td>
                     <td>
@@ -101,7 +104,7 @@
                         </a>
                     </td>
                     <td>
-                        <a class="delete_item delete_items_button admin_panel_buttons" data-appointments-id="@service.Id">
+                        <a class="delete_item delete_services_button admin_panel_buttons" data-services-id="@service.Id">
                             <span>Delete</span>
                         </a>
                     </td>

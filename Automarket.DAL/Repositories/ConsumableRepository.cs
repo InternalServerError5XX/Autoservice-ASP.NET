@@ -27,7 +27,7 @@ namespace Automarket.DAL.Repositories
         public async Task Delete(Consumable entity)
         {
             _db.Consumables.Remove(entity);
-            await _db.SaveChangesAsync();
+            //await _db.SaveChangesAsync();
         }
 
         public async Task<IQueryable<Consumable>> GetAll()
