@@ -18,10 +18,12 @@ namespace Automarket.Service.Implementations
     public class MaintenanceService : IMaintenanceService
     {
         private readonly IBaseRepository<Maintenance> _maintenanceRepository;
+        private readonly IBaseRepository<User> _userRepository;
 
-        public MaintenanceService(IBaseRepository<Maintenance> maintenanceRepository)
+        public MaintenanceService(IBaseRepository<Maintenance> maintenanceRepository, IBaseRepository<User> userRepository)
         {
             _maintenanceRepository = maintenanceRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<BaseResponse<Maintenance>> CreateMaintenance(MaintenanceViewModel maintenance, long? id)
@@ -156,7 +158,17 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var maintenances = await _maintenanceRepository.GetAll().Result.Where(x => x.AppointmentId == id).ToListAsync();
+                var user = await _userRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
+                if (user == null)
+                {
+                    return new BaseResponse<List<Maintenance>>()
+                    {
+                        Description = "User not found",
+                        StatusCode = StatusCode.NotFound
+                    };
+                }
+
+                var maintenances = await _maintenanceRepository.GetAll().Result.Where(x => x.UserId == id).ToListAsync();
 
                 return new BaseResponse<List<Maintenance>>()
                 {

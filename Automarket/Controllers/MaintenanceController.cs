@@ -16,20 +16,20 @@ namespace Automarket.Controllers
             _maintenanceService = maintenanceService;
         }
 
-        public async Task<IActionResult> GetMaintenances()
-        {
-            var response = await _maintenanceService.GetMaintenances();
+        //public async Task<IActionResult> GetMaintenances()
+        //{
+        //    var response = await _maintenanceService.GetMaintenances();
 
-            if (response.StatusCode == Domain.Enum.StatusCode.OK)
-            {
-                return View(response.Data);
-            }
-            else if (response.StatusCode == Domain.Enum.StatusCode.InternalServerError)
-            {
-                return RedirectToAction("InternalServerError", "Errors");
-            }
-            return RedirectToAction("Error", "Errors");
-        }
+        //    if (response.StatusCode == Domain.Enum.StatusCode.OK)
+        //    {
+        //        return View(response.Data);
+        //    }
+        //    else if (response.StatusCode == Domain.Enum.StatusCode.InternalServerError)
+        //    {
+        //        return RedirectToAction("InternalServerError", "Errors");
+        //    }
+        //    return RedirectToAction("Error", "Errors");
+        //}
 
         public async Task<IActionResult> GetMaintenances(long id)
         {
