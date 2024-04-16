@@ -10,10 +10,12 @@ namespace Automarket.Controllers
     public class MaintenanceController : Controller
     {
         private readonly IMaintenanceService _maintenanceService;
+        private readonly IAccountService _accountService;
 
-        public MaintenanceController(IMaintenanceService maintenanceService)
+        public MaintenanceController(IMaintenanceService maintenanceService, IAccountService accountService)
         {
             _maintenanceService = maintenanceService;
+            _accountService = accountService;
         }
 
         //public async Task<IActionResult> GetMaintenances()
@@ -33,38 +35,57 @@ namespace Automarket.Controllers
 
         public async Task<IActionResult> GetMaintenances(long id)
         {
-            var response = await _maintenanceService.GetMaintenances(id);
+            var userId = await _accountService.GetIdByEmail();
 
-            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            if (userId.Data == id || IsAdminOrMechanic())
             {
-                return View(response.Data);
+                var response = await _maintenanceService.GetMaintenances(id);
+
+                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                {
+                    return View(response.Data);
+                }
+                else if (response.StatusCode == Domain.Enum.StatusCode.InternalServerError)
+                {
+                    return RedirectToAction("InternalServerError", "Errors");
+                }
+                return RedirectToAction("Error", "Errors");
             }
-            else if (response.StatusCode == Domain.Enum.StatusCode.InternalServerError)
+            else
             {
-                return RedirectToAction("InternalServerError", "Errors");
+                return RedirectToAction("Forbidden", "Errors");
             }
-            return RedirectToAction("Error", "Errors");
         }
 
         public async Task<IActionResult> GetMaintenance(long id)
         {
-            var response = await _maintenanceService.GetMaintenance(id);
+            var userId = await _accountService.GetIdByEmail();
+            var userMaintenance = await _maintenanceService.GetMaintenances(userId.Data);
 
-            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            if (userMaintenance.Data != null && userMaintenance.Data.Any(x => x.Id == id) && IsAdminOrMechanic())
             {
-                return View(response.Data);
+                var response = await _maintenanceService.GetMaintenance(id);
+
+                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                {
+                    return View(response.Data);
+                }
+                else if (response.StatusCode == Domain.Enum.StatusCode.InternalServerError)
+                {
+                    return RedirectToAction("InternalServerError", "Errors");
+                }
+                return RedirectToAction("Error", "Errors");
             }
-            else if (response.StatusCode == Domain.Enum.StatusCode.InternalServerError)
+            else
             {
-                return RedirectToAction("InternalServerError", "Errors");
+                return RedirectToAction("Forbidden", "Errors");
             }
-            return RedirectToAction("Error", "Errors");
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateMaintenance()
         {
-            if (!User.IsInRole("Admin") && !User.IsInRole("Administrator"))
+            if (IsAdminOrMechanic())
             {
                 return RedirectToAction("Forbidden", "Errors");
             }
@@ -75,7 +96,7 @@ namespace Automarket.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMaintenance(MaintenanceViewModel maintenance, long? id)
         {
-            if (User.IsInRole("Admin"))
+            if (IsAdminOrMechanic())
             {
                 if (ModelState.IsValid)
                 {
@@ -102,7 +123,7 @@ namespace Automarket.Controllers
 
         public async Task<IActionResult> DeleteMaintenance(long id)
         {
-            if (User.IsInRole("Admin"))
+            if (IsAdminOrMechanic())
             {
                 var response = await _maintenanceService.DeleteMaintenance(id);
 
@@ -129,7 +150,7 @@ namespace Automarket.Controllers
         [HttpPost]
         public async Task<IActionResult> GetMaintenance(MaintenanceViewModel maintenance)
         {
-            if (User.IsInRole("Admin"))
+            if (IsAdminOrMechanic())
             {
                 if (ModelState.IsValid)
                 {
@@ -152,6 +173,13 @@ namespace Automarket.Controllers
             {
                 return RedirectToAction("Forbidden", "Errors");
             }
+        }
+
+        private bool IsAdminOrMechanic()
+        {
+            bool isAdmin = User.IsInRole("Admin") || User.IsInRole("Administrator");
+            bool isMechanic = User.IsInRole("Mechanic");
+            return isAdmin || isMechanic;
         }
     }
 }

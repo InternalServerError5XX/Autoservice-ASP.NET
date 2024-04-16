@@ -1,5 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using Automarket.Domain.Entity;
+@using Automarket.Domain.Enum;
+@model List<Maintenance>
+
+<table class="users_table" style="margin-top: 90px" id="maintenancesTable">
+    <thead>
+        <tr class="user_info_titles">
+            <th class="user_info">ID</th>
+            <th class="user_info">Stage</th>
+            <th class="user_info">Created</th>
+            <th class="user_info">Estimate</th>
+            <th class="user_info">Overview</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model.OrderByDescending(service => service.Stage != ServiceStage.Done))
+        {
+            @if (service.Stage != ServiceStage.Done)
+            {
+                <tr class="users_info_tr items_info_tr @service.Stage">
+                    <td class="user_info">@service.Id</td>
+                    <td class="user_info">@service.Stage</td>
+                    <td class="user_info">@service.CreationDate</td>
+                    <td class="user_info">@service.CompletionTime</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Maintenance"
+                           asp-action="GetMaintenance" asp-route-id="@service.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="users_info_tr items_info_tr unavalible_admin_item @service.Stage">
+                    <td class="user_info">@service.Id</td>
+                    <td class="user_info">@service.Stage</td>
+                    <td class="user_info">@service.CreationDate</td>
+                    <td class="user_info">@service.CompletionTime</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Maintenance"
+                           asp-action="GetMaintenance" asp-route-id="@service.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
