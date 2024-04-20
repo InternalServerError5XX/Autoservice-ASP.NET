@@ -1,10 +1,15 @@
 ﻿@using Automarket.Domain.Enum
 @using Automarket.Domain.ViewModels.AutoService
+@using Automarket.Service.Interfaces
 @model MaintenanceViewModel
+
+@inject IAppointmentService AppointmentService
 
 @{
     ViewData["Title"] = "Maintenance";
     bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+    var appointment = await AppointmentService.GetAppointment((Int64)Model.AppointmentId);
+    var name = appointment.Data.Name;
 
     if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
     {
@@ -32,7 +37,11 @@
         <div class="maintenance_date_container">
             <span class="maintenance_date">@Model.CreationDate.ToString("yyyy/MM/dd HH:mm")</span>
             <hr class="date_hr">
-            <span class="maintenance_date">@Model.CompletionTime.ToString("yyyy/MM/dd HH:mm")</span>
+            <span class="maintenance_date">@Model.CompletionTime.ToString("yyyy/MM/dd HH:mm")</span>            
+        </div>
+        <div class="maintenance_name_container">
+            <span class="maintenance_name">@name</span>
+            <span class="maintenance_name">SecAuto</span>
         </div>
         <div class="maintenance_service_container">
             @switch (Model.Stage)

@@ -85,7 +85,7 @@ namespace Automarket.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateMaintenance()
         {
-            if (IsAdminOrMechanic())
+            if (!IsAdminOrMechanic())
             {
                 return RedirectToAction("Forbidden", "Errors");
             }
