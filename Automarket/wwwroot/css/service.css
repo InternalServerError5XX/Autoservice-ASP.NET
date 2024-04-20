@@ -197,3 +197,276 @@
     font-size: 20px;
     font-family: "Poppins";
 }
+
+.maintenance_container {
+    width: 100%;
+    height: 60vh;
+    background-color: lightgray;
+}
+
+.maintenance_title {
+    color: #333333;
+    font-size: 40px;
+    font-family: "Montserrat";
+    padding-top: 30px;
+    text-align: center;
+}
+
+.maintenance_date_container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 90px;
+    padding: 20px;
+}
+
+.maintenance_date {
+    color: #333333;
+    font-size: 20px;
+    font-family: "Montserrat";
+}
+
+.date_hr {
+    width: 150vh;
+    border-top: 2px solid black;
+    margin-top: 15px;
+}
+
+.date_hr::before,
+.date_hr::after {
+    content: "";
+    position: absolute;
+    margin-top: -12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.date_hr::before {
+    left: 34vh;
+}
+
+.date_hr::after {
+    right: 34vh;
+}
+
+.maintenance_service_container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px;
+}
+
+.service_status_text {
+    color: #333333;
+    font-size: 20px;
+    font-family: "Poppins";
+    margin: 0 auto;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.service_pending_hr {
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 100px;
+    border-top: 3px solid black;
+}
+
+.service_pending_hr::after {
+    content: "";
+    position: absolute;
+    margin-top: -12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: blue;
+}
+
+.service_pending_hr::after {
+    right: 10vh;
+    background-color: black;
+}
+
+.service_pending_circle1 {
+    content: "";
+    margin-top: -12px;
+    margin-left: 33%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: gray;
+    z-index: 1;
+}
+
+.service_pending_circle2 {
+    content: "";
+    margin-top: -20px;
+    margin-left: 66%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: gray;
+    z-index: 1;
+}
+
+.service_diagnostics_hr1 {
+    width: 30%;
+    margin-left: 2.5%;
+    margin-top: 100px;
+    border-top: 3px solid orange;
+}
+
+.service_diagnostics_hr2 {
+    width: 60%;
+    position: absolute;
+    right: 0;
+    margin-right: 5%;
+    margin-top: 100px;
+    border-top: 3px solid gray;
+}
+
+.service_diagnostics_hr1::before {
+    content: "";
+    position: absolute;
+    margin-top: -12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.service_diagnostics_circle1 {
+    content: "";
+    margin-top: -26px;
+    margin-left: 66%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: gray;
+    z-index: 1;
+}
+
+.service_diagnostics_circle2 {
+    content: "";
+    margin-top: -20px;
+    margin-left: 96%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: gray;
+    z-index: 1;
+}
+
+.service_service_hr1 {
+    width: 64%;
+    margin-left: 2.5%;
+    margin-top: 100px;
+    border-top: 3px solid red;
+}
+
+.service_service_hr2 {
+    width: 30%;
+    position: absolute;
+    right: 0;
+    margin-right: 5%;
+    margin-top: 100px;
+    border-top: 3px solid gray;
+}
+
+.service_service_hr1::before,
+.service_service_hr1::after {
+    content: "";
+    position: absolute;
+    margin-top: -12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.service_service_hr1::after {
+    left: 33.8%;
+    background-color: red;
+}
+
+.service_service_circle1 {
+    content: "";
+    margin-top: -25px;
+    margin-left: 97%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: gray;
+    z-index: 1;
+}
+
+.service_done_hr {
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 100px;
+    border-top: 3px solid green;
+}
+
+.service_done_hr::before {
+    content: "";
+    position: absolute;
+    margin-top: -12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: green;
+}
+
+.service_done_circle1 {
+    content: "";
+    margin-top: -12px;
+    margin-left: 33%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #3CB371;
+    z-index: 1;
+}
+
+.service_done_circle2 {
+    content: "";
+    margin-top: -20px;
+    margin-left: 66%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #3CB371;
+    z-index: 1;
+}
+
+.service_pending_icon {
+    position: absolute;
+    background: url('/img/site/service_icon.svg');
+    fill: #6495ED;
+    margin-top: 10vh;
+    left: 8vh;
+}
+
+.service_done_icon {
+    position: absolute;
+    background: url('/img/site/service_icon.svg');
+    fill: #3CB371;
+    margin-top: 10vh;
+    right: 8vh;
+}
+
+.service_diagnostics_icon {
+    position: absolute;
+    background: url('/img/site/service_icon.svg');
+    fill: #E5AF00;
+    margin-top: 10vh;
+    left: 33%;
+}
+
+.service_service_icon {
+    position: absolute;
+    background: url('/img/site/service_icon.svg');
+    fill: #FF4C4C;
+    margin-top: 10vh;
+    left: 64.5%;
+}

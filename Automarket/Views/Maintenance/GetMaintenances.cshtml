@@ -3,7 +3,7 @@
 @model List<Maintenance>
 
 @{
-    ViewData["Title"] = "Maintenance";
+    ViewData["Title"] = "Maintenances";
     bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
 
     if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
