@@ -153,7 +153,8 @@
                         <div class="info_line">
                             <span class="short_label">Services status:</span>
                             <span class="short_text">You have @maintenancesCount current services</span>
-                            <a class="check_services_button" asp-controller="Home" asp-action="Index">
+                            <a class="check_services_button" asp-controller="Maintenance" asp-action="GetMaintenances"
+                               asp-route-id="@Model.Id">
                                 <span class="settings_text">Check</span>
                             </a>
                         </div>                        

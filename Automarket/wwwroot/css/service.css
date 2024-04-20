@@ -253,8 +253,9 @@
 .maintenance_name_container {
     display: flex;
     justify-content: space-between;
-    padding-left: 50px;
-    padding-right: 20px;
+    margin-top: -10px;
+    padding-left: 29vh;
+    padding-right: 29vh;
 }
 
 .maintenance_service_container {
