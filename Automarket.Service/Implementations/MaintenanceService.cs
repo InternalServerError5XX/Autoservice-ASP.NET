@@ -26,16 +26,17 @@ namespace Automarket.Service.Implementations
             _userRepository = userRepository;
         }
 
-        public async Task<BaseResponse<Maintenance>> CreateMaintenance(MaintenanceViewModel maintenance, long? id)
+        public async Task<BaseResponse<Maintenance>> CreateMaintenance(MaintenanceViewModel maintenance)
         {
             try
             {
                 var newMaintenance = new Maintenance
                 {
-                    AppointmentId = (Int64)id,
+                    AppointmentId = maintenance.AppointmentId,
+                    UserId = maintenance.UserId,
                     Stage = maintenance.Stage,
-                    CreationDate = maintenance.CreationDate,
-                    EditDate = maintenance.EditDate,
+                    CreationDate = DateTime.UtcNow,
+                    EditDate = DateTime.UtcNow,
                     CompletionTime = maintenance.CompletionTime,
                 };
 

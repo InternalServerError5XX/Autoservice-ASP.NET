@@ -1,5 +1,80 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Automarket.Domain.Enum;
+@using Automarket.Domain.Enum.ConsumableType;
+@using Automarket.Domain.ViewModels.AutoService
+@using Automarket.Domain.ViewModels.ConsumableViewModel;
+@using Automarket.Domain.Extensions
+@using Automarket.Service.Interfaces
+@model MaintenanceViewModel;
+
 @{
+    ViewData["Title"] = "Appointment details";
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
 }
+
+<form asp-controller="Maintenance" asp-action="CreateMaintenance"
+      method="post" enctype="multipart/form-data" id="saveMaintenanceForm">
+    @if (admin)
+    {
+        <div class="save_form">
+            <div class="save_input_container">
+                <div class="saveform_image_preview">
+                    <img class="card_img" src="/img/site/auto-service-hero.svg" id="currentImage">
+                </div>
+            </div>
+            <div class="saveform_info">
+                <div class="saveform_row">
+                    <div class="save_input_container">
+                        <span asp-validation-for="AppointmentId" class="validation_text"></span>
+                        <label asp-for="@Model.AppointmentId" class="saveform_label">Appointment Id</label>
+                        <input type="text" class="saveform_input" asp-for="@Model.AppointmentId" value="@Model.AppointmentId" readonly />
+                    </div>
+                    <div class="save_input_container">
+                        <span asp-validation-for="UserId" class="validation_text"></span>
+                        <label asp-for="@Model.UserId" class="saveform_label">User Id</label>
+                        <input type="text" class="saveform_input" asp-for="@Model.UserId" value="@Model.UserId" readonly />
+                    </div>
+                </div>
+                <div class="saveform_row">
+                    <div class="save_input_container">
+                        <span asp-validation-for="Stage" class="validation_text"></span>
+                        <label asp-for="@Model.Stage" class="saveform_label">Service Stage</label>
+                        <select asp-for="@Model.Stage" class="saveform_input">
+                            @foreach (var type in Enum.GetValues(typeof(ServiceStage)))
+                            {
+                                <option value="@type">@EnumExtension.GetDisplayName((ServiceStage)type)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="save_input_container">
+                        <span asp-validation-for="CompletionTime" class="validation_text"></span>
+                        <label asp-for="@Model.CompletionTime" class="saveform_label">Completion Date</label>
+                        <input type="datetime-local" class="saveform_input" asp-for="@Model.CompletionTime" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                    </div>
+                </div>
+                <div class="saveform_buttons">
+                    <a class="cancel_button" href="javascript:history.back()">Cancel</a>
+                    <button class="save_button" id="saveMaintenanceSubmit" type="submit">Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</form>

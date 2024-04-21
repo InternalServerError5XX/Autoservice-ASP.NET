@@ -485,3 +485,9 @@
     margin-top: 10vh;
     left: 64.5%;
 }
+
+.add_maintenance {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 20px;
+}

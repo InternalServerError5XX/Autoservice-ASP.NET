@@ -11,11 +11,13 @@ namespace Automarket.Controllers
     {
         private readonly IMaintenanceService _maintenanceService;
         private readonly IAccountService _accountService;
+        private readonly IAppointmentService _appointmentService;
 
-        public MaintenanceController(IMaintenanceService maintenanceService, IAccountService accountService)
+        public MaintenanceController(IMaintenanceService maintenanceService, IAccountService accountService, IAppointmentService appointmentService)
         {
             _maintenanceService = maintenanceService;
             _accountService = accountService;
+            _appointmentService = appointmentService;
         }
 
         //public async Task<IActionResult> GetMaintenances()
@@ -62,7 +64,7 @@ namespace Automarket.Controllers
             var userId = await _accountService.GetIdByEmail();
             var userMaintenance = await _maintenanceService.GetMaintenances(userId.Data);
 
-            if (userMaintenance.Data != null && userMaintenance.Data.Any(x => x.Id == id) && IsAdminOrMechanic())
+            if (userMaintenance.Data != null && userMaintenance.Data.Any(x => x.Id == id) || IsAdminOrMechanic())
             {
                 var response = await _maintenanceService.GetMaintenance(id);
 
@@ -83,24 +85,28 @@ namespace Automarket.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateMaintenance()
+        public async Task<IActionResult> CreateMaintenance(MaintenanceViewModel maintenance)
         {
             if (!IsAdminOrMechanic())
             {
                 return RedirectToAction("Forbidden", "Errors");
             }
 
-            return await Task.FromResult(View());
+            var appointment = await _appointmentService.GetAppointment((Int64)maintenance.AppointmentId);
+            maintenance.UserId = appointment.Data.UserId;
+            maintenance.CompletionTime = DateTime.UtcNow;
+
+            return await Task.FromResult(View(maintenance));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMaintenance(MaintenanceViewModel maintenance, long? id)
+        public async Task<IActionResult> CreateMaintenance(MaintenanceViewModel maintenance, CancellationToken token)
         {
             if (IsAdminOrMechanic())
             {
                 if (ModelState.IsValid)
                 {
-                    var response = await _maintenanceService.CreateMaintenance(maintenance, id);
+                    var response = await _maintenanceService.CreateMaintenance(maintenance);
 
                     if (response.StatusCode == Domain.Enum.StatusCode.OK)
                     {

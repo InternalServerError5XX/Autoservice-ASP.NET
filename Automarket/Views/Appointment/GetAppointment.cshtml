@@ -39,6 +39,8 @@
                     <div class="save_input_container">
                         <label class="saveform_label">
                             <span class="saveform_title">Appointment details</span>
+                            <a asp-controller="Maintenance" asp-action="CreateMaintenance" asp-route-AppointmentId="@Model.Id"
+                               class="add_item_admin add_maintenance">Add maintenance</a>
                         </label>
                         <div class="saveform_image_preview">
                             <img class="card_img" src="/img/site/auto-service-hero.svg" id="currentImage">
