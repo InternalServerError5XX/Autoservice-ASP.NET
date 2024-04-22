@@ -94,7 +94,7 @@ namespace Automarket.Controllers
 
             var appointment = await _appointmentService.GetAppointment((Int64)maintenance.AppointmentId);
             maintenance.UserId = appointment.Data.UserId;
-            maintenance.CompletionTime = DateTime.UtcNow;
+            maintenance.CompletionTime = DateTime.Now;
 
             return await Task.FromResult(View(maintenance));
         }
@@ -179,6 +179,54 @@ namespace Automarket.Controllers
             {
                 return RedirectToAction("Forbidden", "Errors");
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditMaintenance(long id)
+        {
+            if (!IsAdminOrMechanic())
+            {
+                return RedirectToAction("Forbidden", "Errors");
+            }
+
+            var response = await _maintenanceService.GetMaintenance(id);
+            var appointment = await _appointmentService.GetAppointment((Int64)response.Data.AppointmentId);
+            response.Data.UserId = appointment.Data.UserId;
+
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                TempData["AlertMessage"] = response.Description;
+                TempData["ResponseStatus"] = response.StatusCode.ToString();
+                return await Task.FromResult(View(response.Data));
+            }
+
+            TempData["AlertMessage"] = response.Description;
+            TempData["ResponseStatus"] = "Error";
+
+            return await Task.FromResult(View(response));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditMaintenance(MaintenanceViewModel model, long id)
+        {
+            if (!IsAdminOrMechanic())
+            {
+                return RedirectToAction("Forbidden", "Errors");
+            }
+
+            var response = await _maintenanceService.EditMaintenance(id, model);
+
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                TempData["AlertMessage"] = response.Description;
+                TempData["ResponseStatus"] = response.StatusCode.ToString();
+                return RedirectToAction("GetMaintenance", "Maintenance", new { id = response.Data.Id });
+            }
+
+            TempData["AlertMessage"] = response.Description;
+            TempData["ResponseStatus"] = "Error";
+
+            return await Task.FromResult(View(response));
         }
 
         private bool IsAdminOrMechanic()

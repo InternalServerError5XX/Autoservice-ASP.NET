@@ -38,6 +38,10 @@
                     <th class="user_info">Created</th>
                     <th class="user_info">Estimate</th>
                     <th class="user_info">Overview</th>
+                    @if (admin)
+                    {
+                        <th class="user_info">Action</th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -56,6 +60,14 @@
                                     <span>Check</span>
                                 </a>
                             </td>
+                            @if (admin)
+                            {
+                                <td>
+                                    <a class="delete_item delete_services_button admin_panel_buttons" data-services-id="@service.Id">
+                                        <span>Delete</span>
+                                    </a>
+                                </td>
+                            }
                         </tr>
                     }
                     else
@@ -71,6 +83,14 @@
                                     <span>Check</span>
                                 </a>
                             </td>
+                            @if (admin)
+                            {
+                                <td>
+                                    <a class="delete_item delete_services_button admin_panel_buttons" data-services-id="@service.Id">
+                                        <span>Delete</span>
+                                    </a>
+                                </td>
+                            }
                         </tr>
                     }
                 }

@@ -86,5 +86,15 @@
             }    
             <span class="service_status_text">Service status: @Model.Stage</span>
         </div>
+        @if (admin)
+        {
+            <div class="admin_items_buttons">
+                <a class="edit_items" asp-controller="Maintenance"
+                   asp-action="EditMaintenance" asp-route-id="@Model.Id">Edit</a>
+                <a class="delete_item delete_services_button" data-services-id="@Model.Id">
+                    <span>Delete</span>
+                </a>
+            </div>
+        }
     </div>
 </div>

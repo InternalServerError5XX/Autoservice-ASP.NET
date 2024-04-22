@@ -110,7 +110,7 @@ namespace Automarket.Service.Implementations
 
                 maintenance.AppointmentId = model.AppointmentId;
                 maintenance.Stage = model.Stage;
-                maintenance.CreationDate = model.CreationDate;
+                maintenance.CreationDate = maintenance.CreationDate;
                 maintenance.EditDate = DateTime.UtcNow;
                 maintenance.CompletionTime = model.CompletionTime;
 
