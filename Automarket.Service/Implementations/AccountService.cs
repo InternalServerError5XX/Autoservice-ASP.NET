@@ -5,7 +5,6 @@ using Automarket.Domain.Enum;
 using Automarket.Domain.Helpers;
 using Automarket.Domain.Responce;
 using Automarket.Domain.ViewModels.Account;
-using Automarket.Domain.ViewModels.Car;
 using Automarket.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
