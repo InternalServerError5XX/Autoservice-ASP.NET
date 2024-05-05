@@ -40,7 +40,7 @@
                 <div class="modal_form">
                     <button class="close_button" id="closeButton">&times;</button>
                     <h2 class="form_title">Fill out the form for services</h2>
-                    <form id="modal_form" method="post" asp-controller="AutoService" asp-action="CreateAppointment" 
+                    <form id="modal_form" method="post" asp-controller="Appointment" asp-action="CreateAppointment" 
                         data-ajax="true" data-ajax-method="POST" data-ajax-complete="onComplete">
                         <div class="input_container">
                             <span asp-validation-for="Name" class="serviceform_validation"></span>

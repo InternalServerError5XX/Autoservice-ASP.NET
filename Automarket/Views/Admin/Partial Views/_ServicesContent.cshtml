@@ -4,16 +4,20 @@
 @using Automarket.Domain.Enum.ConsumableType;
 @using Automarket.Domain.Extensions;
 @using Automarket.Domain.ViewModels.AdminPanel;
+@using Automarket.Service.Interfaces
 @model AdminPanelViewModel
+
+@inject IAccountService accountService;
+@inject IAppointmentService appointmentService;
 
 <div class="adminpanel_container">
     <h2 class="consumables_title">SecAuto Admin Panel</h2>
-    <a asp-controller="Admin" asp-action="CreateAccount" class="add_item_admin add_account">Add New</a>
+    <a asp-controller="Maintenance" asp-action="CreateMaintenance" class="add_item_admin add_account">Add New</a>
 
     <section>
         <div class="header_search_form search_account_form">
-            <form class="search_form" onsubmit="event.preventDefault(); searchUsers();">
-                <input class="search_input search_account" id="emailSearch" type="text" placeholder="Search...">
+            <form class="search_form" onsubmit="event.preventDefault(); searchMaintenancesAdmin();">
+                <input class="search_input search_account" id="maintenancesSearch" type="text" placeholder="Search...">
                 <button class="search_button" type="submit">Find</button>
             </form>
         </div>
@@ -23,18 +27,89 @@
 <table class="users_table">
     <thead>
         <tr class="user_info_titles">
-            <th class="user_info user_info_header" id="carOilsHeader">@ConsumableCategory.Car_Oils.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="carChemistryHeader">@ConsumableCategory.Car_Chemistry.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="carCosmeticsHeader">@ConsumableCategory.Car_Cosmetics.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="allItemsHeader">Total items</th>
+            <th class="user_info user_info_header" id="activeHeader">Active</th>
+            <th class="user_info user_info_header" id="doneHeader">Done</th>
+            <th class="user_info user_info_header" id="pendingHeader">Pending</th>
+            <th class="user_info user_info_header" id="diagnosticsHeader">Diagnostics</th>
+            <th class="user_info user_info_header" id="serviceHeader">Service</th>
+            <th class="user_info user_info_header" id="allMaintenancesHeader">Total items</th>
         </tr>
     </thead>
     <tbody>
         <tr class="users_info_tr">
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Oils))</td>
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Chemistry))</td>
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Cosmetics))</td>
-            <td class="user_info">@Model.Items.Count()</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage != ServiceStage.Done))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Done))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Pending))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Diagnostics))</td>
+            <td class="user_info">@(Model.Services.Count(s => s.Stage == ServiceStage.Service))</td>
+            <td class="user_info">@Model.Services.Count()</td>
         </tr>
+    </tbody>
+</table>
+
+<table class="users_table" id="maintenancesTable">
+    <thead>
+        <tr class="user_info_titles">
+            <th class="user_info">ID</th>
+            <th class="user_info">Appointment ID</th>
+            <th class="user_info">Name</th>
+            <th class="user_info">Phone number</th>
+            <th class="user_info">Stage</th>
+            <th class="user_info">Created</th>
+            <th class="user_info">Estimate</th>
+            <th class="user_info">Overview</th>
+            <th class="user_info">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model.Services.OrderByDescending(service => service.Stage != ServiceStage.Done))
+        {
+            @if (service.Stage != ServiceStage.Done)
+            {
+                <tr class="users_info_tr items_info_tr @service.Stage">
+                    <td class="user_info">@service.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Name</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.PhoneNumber</td>
+                    <td class="user_info">@service.Stage</td>
+                    <td class="user_info">@service.CreationDate</td>
+                    <td class="user_info">@service.CompletionTime</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Maintenance"
+                           asp-action="GetMaintenance" asp-route-id="@service.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete_item delete_services_button admin_panel_buttons" data-services-id="@service.Id">
+                            <span>Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="users_info_tr items_info_tr unavalible_admin_item @service.Stage">
+                    <td class="user_info">@service.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Id</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.Name</td>
+                    <td class="user_info">@appointmentService.GetAppointment((Int64)service.AppointmentId).Result.Data.PhoneNumber</td>
+                    <td class="user_info">@service.Stage</td>
+                    <td class="user_info">@service.CreationDate</td>
+                    <td class="user_info">@service.CompletionTime</td>
+                    <td>
+                        <a class="edit_items admin_panel_buttons" asp-controller="Maintenance"
+                           asp-action="GetMaintenance" asp-route-id="@service.Id">
+                            <span>Check</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete_item delete_services_button admin_panel_buttons" data-services-id="@service.Id">
+                            <span>Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>

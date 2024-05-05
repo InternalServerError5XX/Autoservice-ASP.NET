@@ -50,19 +50,19 @@
     margin-bottom: 50px;
 }
 
-.admin_role, .oil_type {
+.admin_role, .oil_type, .Service {
     background-color: #ffcccb;
 }
 
-.administrator_role, .chemistry_type {
+.administrator_role, .chemistry_type, .Done {
     background-color: #c1e1c5;
 }
 
-.mechanic_role, .cosmetics_type {
+.mechanic_role, .cosmetics_type, .Pending {
     background-color: #cfe2f3;
 }
 
-.user_role {
+.user_role, .Diagnostics {
     background-color: #f7ebbe;
 }
 
@@ -108,7 +108,7 @@
 
 .validation_text {
     position: absolute;
-    margin-top: -1vh;
+
     font-family: "Poppins";
     font-weight: 700;
     font-size: 18px;
@@ -127,5 +127,3 @@
 .CallBack_True {
     background-color: #ffcccb;
 }
-
-

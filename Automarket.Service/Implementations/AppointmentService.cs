@@ -15,17 +15,14 @@ using System.Threading.Tasks;
 
 namespace Automarket.Service.Implementations
 {
-    public class AutoServiceService : IAutoServiceService
+    public class AppointmentService : IAppointmentService
     {
         private readonly IBaseRepository<Appointment> _appointmentRepository;
-        private readonly IBaseRepository<User> _userRepository;
         private readonly IAccountService _accountService;
 
-        public AutoServiceService (IBaseRepository<Appointment> appointmentRepository, IBaseRepository<User> userRepository, 
-            IAccountService accountService)
+        public AppointmentService (IBaseRepository<Appointment> appointmentRepository, IAccountService accountService)
         {
             _appointmentRepository = appointmentRepository;
-            _userRepository = userRepository;
             _accountService = accountService;
         }
 
@@ -33,7 +30,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointments = await _appointmentRepository.GetAll().ToListAsync();
+                var appointments = await _appointmentRepository.GetAll().Result.ToListAsync();
 
                 return new BaseResponse<List<Appointment>>()
                 {
@@ -55,7 +52,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointment = await _appointmentRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var appointment = await _appointmentRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (appointment == null)
                 {
@@ -100,10 +97,9 @@ namespace Automarket.Service.Implementations
             try
             {
                 var _appointment = await _appointmentRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.AppointmentDate == appointment.AppointmentDate);
-                string userEmail = await _accountService.GetUserEmail();
-
-                var _user = await _accountService.GetProfile(userEmail);
+                    .Result.FirstOrDefaultAsync(x => x.AppointmentDate == appointment.AppointmentDate);
+                var response = await _accountService.GetIdByEmail();
+                var userId = response.Data;
 
                 if (_appointment != null)
                 {
@@ -115,7 +111,7 @@ namespace Automarket.Service.Implementations
 
                 var newAppointment = new Appointment
                 {
-                    UserId = _user.Data.Id,
+                    UserId = userId,
                     Name = appointment.Name,
                     PhoneNumber = appointment.PhoneNumber,
                     CallBack = appointment.CallBack,
@@ -148,7 +144,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointment = await _appointmentRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var appointment = await _appointmentRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (appointment == null)
                 {
@@ -182,10 +178,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var appointment = await _appointmentRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
-                string userEmail = await _accountService.GetUserEmail();
-
-                var _user = await _accountService.GetProfile(userEmail);
+                var appointment = await _appointmentRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (appointment == null)
                 {

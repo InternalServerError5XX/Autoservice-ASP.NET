@@ -1,7 +1,10 @@
 ﻿@using Automarket.Domain.Entity;
 @using System.Text.RegularExpressions;
 @using Automarket.Domain.Enum;
+@using Automarket.Service.Interfaces
 @model List<Consumable>
+
+@inject IWishlistService WishlistService
 
 @{
     ViewData["Title"] = "Consumables";
@@ -9,6 +12,9 @@
 
     var availableItems = Model.Where(item => item.Quantity > 0);
     var unavailableItems = Model.Except(availableItems);
+
+    var wishlist = await WishlistService.GetWishlist();
+    var wishIds = wishlist.Data.Select(w => w.Id);
 
     if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
     {
@@ -76,7 +82,18 @@
                                 {
                                     <a class="add_to_basket" asp-controller="Basket" asp-action="Basket"></a>
                                 }
-                                <a href="" class="favorite_icon"></a>
+
+                                @if(wishIds.Contains(item.Id))
+                                {
+                                    <a asp-controller="Wishlist" asp-action="DeleteFromWishlist"
+                                       asp-route-id="@item.Id" class="existing_favorite_icon"></a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Wishlist" asp-action="AddToWishlist"
+                                       asp-route-id="@item.Id" class="favorite_icon"></a>
+                                }
+
                                 <span class="item_card_price">$@item.Price<br /></span>
                                 <section>
                                     @if (admin)
@@ -112,7 +129,18 @@
                                     </div>
                                     <span class="item_name">@item.Brand @item.Model</span>
                                 </a>
-                                <a href="" class="favorite_icon"></a>
+
+                                @if (wishIds.Contains(item.Id))
+                                {
+                                    <a asp-controller="Wishlist" asp-action="DeleteFromWishlist"
+                                       asp-route-id="@item.Id" class="existing_favorite_icon"></a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Wishlist" asp-action="AddToWishlist"
+                                       asp-route-id="@item.Id" class="favorite_icon"></a>
+                                }
+
                                 <span class="item_card_price">$@item.Price<br /></span>
                                 <section>
                                     @if (admin)
@@ -130,7 +158,7 @@
                                         <div class="admin_items_buttons">
                                             <a class="edit_items" asp-controller="Consumable"
                                                asp-action="EditItem" asp-route-id="@item.Id">Edit</a>
-                                            <a class="delete_items delete_items_button" id="deleteItem" data-items-id="@item.Id">
+                                            <a class="delete_item delete_items_button" data-items-id="@item.Id">
                                                 <span>Delete</span>
                                             </a>
                                         </div>

@@ -10,19 +10,18 @@ namespace Automarket.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IAutoServiceService _autoServiceService;
+        private readonly IAppointmentService _appointmentService;
         private readonly IAccountService _accountService;
         private readonly IConsumableService _consumableService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMaintenanceService _maintenanceService;
 
-        public AdminController(IAutoServiceService autoServiceService, IAccountService accountService, 
-            IHttpContextAccessor httpContextAccessor, IConsumableService consumableService)
+        public AdminController(IAppointmentService appointmentService, IAccountService accountService, 
+            IConsumableService consumableService, IMaintenanceService maintenanceService)
         {
-            _autoServiceService = autoServiceService;
+            _appointmentService = appointmentService;
             _accountService = accountService;
-            _httpContextAccessor = httpContextAccessor;
             _consumableService = consumableService;
-
+            _maintenanceService = maintenanceService;
         }
 
         public async Task<IActionResult> Adminpanel()
@@ -32,25 +31,28 @@ namespace Automarket.Controllers
                 return RedirectToAction("Forbidden", "Errors");
             }
 
-            var serviceResponse = await _autoServiceService.GetAppointments();
+            var serviceResponse = await _appointmentService.GetAppointments();
             var userResponse = await _accountService.GetUsers();
             var itemResponse = await _consumableService.GetItems();
+            var maintenanceResponse = await _maintenanceService.GetMaintenances();
 
             if (userResponse.StatusCode == Domain.Enum.StatusCode.OK && itemResponse.StatusCode == Domain.Enum.StatusCode.OK &&
-                serviceResponse.StatusCode == Domain.Enum.StatusCode.OK)
+                serviceResponse.StatusCode == Domain.Enum.StatusCode.OK && maintenanceResponse.StatusCode == Domain.Enum.StatusCode.OK)
             {
                 var viewModel = new AdminPanelViewModel
                 {
                     Appointments = serviceResponse.Data,
                     Users = userResponse.Data,
-                    Items = itemResponse.Data
+                    Items = itemResponse.Data,
+                    Services = maintenanceResponse.Data,
                 };
 
                 return View(viewModel);
             }
             else if (serviceResponse.StatusCode == Domain.Enum.StatusCode.InternalServerError || 
                         userResponse.StatusCode == Domain.Enum.StatusCode.InternalServerError ||
-                        itemResponse.StatusCode == Domain.Enum.StatusCode.InternalServerError)
+                        itemResponse.StatusCode == Domain.Enum.StatusCode.InternalServerError ||
+                        maintenanceResponse.StatusCode == Domain.Enum.StatusCode.InternalServerError)
             {
                 return RedirectToAction("InternalServerError", "Errors");
             }

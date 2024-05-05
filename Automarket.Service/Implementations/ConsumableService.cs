@@ -22,7 +22,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var item = await _consumableRepository.GetAll().FirstOrDefaultAsync(x => x.Brand == model.Brand &&
+                var item = await _consumableRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Brand == model.Brand &&
                     x.Model == model.Model && x.Year == model.Year && x.Country == model.Country);
 
                 if (item != null)
@@ -73,7 +73,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var item = await _consumableRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var item = await _consumableRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (item == null)
                 {
@@ -116,7 +116,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var item = await _consumableRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var item = await _consumableRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (item == null)
                 {
@@ -177,7 +177,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var item = await _consumableRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var item = await _consumableRepository.GetAll().Result.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (item == null)
                 {
@@ -222,7 +222,7 @@ namespace Automarket.Service.Implementations
         {
             try
             {
-                var items = await _consumableRepository.GetAll().ToListAsync();
+                var items = await _consumableRepository.GetAll().Result.ToListAsync();
 
                 return new BaseResponse<List<Consumable>>()
                 {

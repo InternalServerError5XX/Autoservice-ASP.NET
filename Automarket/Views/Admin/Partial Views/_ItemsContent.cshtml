@@ -6,6 +6,11 @@
 @using Automarket.Domain.ViewModels.AdminPanel;
 @model AdminPanelViewModel
 
+@{
+    var availableItems = Model.Items.Where(item => item.Quantity > 0).OrderByDescending(item => item.ConsumableType);
+    var unavailableItems = Model.Items.Where(item => item.Quantity == 0);
+}
+
 @functions {
     string GetCategoryClass(ConsumableCategory category)
     {
@@ -62,6 +67,7 @@
             <th class="user_info">ID</th>
             <th class="user_info">Brand</th>
             <th class="user_info">Model</th>
+            <th class="user_info">Category</th>
             <th class="user_info">Price</th>
             <th class="user_info">Quantity</th>
             <th class="user_info">Overview</th>
@@ -69,50 +75,49 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var itemType in Model.Items.OrderBy(item => item.ConsumableType))
+        @foreach (var itemType in availableItems)
         {
-            @if (itemType.Quantity == 0)
-            {
-                <tr class="users_info_tr items_info_tr unavalible_admin_item @GetCategoryClass(itemType.ConsumableType)">
-                    <td class="user_info">@itemType.Id</td>
-                    <td class="user_info">@itemType.Brand</td>
-                    <td class="user_info">@itemType.Model</td>
-                    <td class="user_info">@itemType.Price</td>
-                    <td class="user_info">@itemType.Quantity</td>
-                    <td>
-                        <a class="edit_items admin_panel_buttons" asp-controller="Consumable"
-                           asp-action="GetItem" asp-route-id="@itemType.Id">
-                            <span>Check</span>
-                        </a>
-                    </td>
-                    <td>
-                        <a class="delete_item delete_items_button admin_panel_buttons" data-items-id="@itemType.Id">
-                            <span>Delete</span>
-                        </a>
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr class="users_info_tr items_info_tr @GetCategoryClass(itemType.ConsumableType)">
-                    <td class="user_info">@itemType.Id</td>
-                    <td class="user_info">@itemType.Brand</td>
-                    <td class="user_info">@itemType.Model</td>
-                    <td class="user_info">@itemType.Price</td>
-                    <td class="user_info">@itemType.Quantity</td>
-                    <td>
-                        <a class="edit_items admin_panel_buttons" asp-controller="Consumable"
-                           asp-action="GetItem" asp-route-id="@itemType.Id">
-                            <span>Check</span>
-                        </a>
-                    </td>
-                    <td>
-                        <a class="delete_item delete_items_button admin_panel_buttons" data-items-id="@itemType.Id">
-                            <span>Delete</span>
-                        </a>
-                    </td>
-                </tr>
-            }           
+            <tr class="users_info_tr items_info_tr @GetCategoryClass(itemType.ConsumableType)">
+                <td class="user_info">@itemType.Id</td>
+                <td class="user_info">@itemType.Brand</td>
+                <td class="user_info">@itemType.Model</td>
+                <td class="user_info">@itemType.ConsumableType</td>
+                <td class="user_info">@itemType.Price</td>
+                <td class="user_info">@itemType.Quantity</td>
+                <td>
+                    <a class="edit_items admin_panel_buttons" asp-controller="Consumable"
+                       asp-action="GetItem" asp-route-id="@itemType.Id">
+                        <span>Check</span>
+                    </a>
+                </td>
+                <td>
+                    <a class="delete_item delete_items_button admin_panel_buttons" data-items-id="@itemType.Id">
+                        <span>Delete</span>
+                    </a>
+                </td>
+            </tr>
+        }
+        @foreach (var itemType in unavailableItems)
+        {
+            <tr class="users_info_tr items_info_tr unavalible_admin_item @GetCategoryClass(itemType.ConsumableType)">
+                <td class="user_info">@itemType.Id</td>
+                <td class="user_info">@itemType.Brand</td>
+                <td class="user_info">@itemType.Model</td>
+                <td class="user_info">@itemType.ConsumableType</td>
+                <td class="user_info">@itemType.Price</td>
+                <td class="user_info">@itemType.Quantity</td>
+                <td>
+                    <a class="edit_items admin_panel_buttons" asp-controller="Consumable"
+                       asp-action="GetItem" asp-route-id="@itemType.Id">
+                        <span>Check</span>
+                    </a>
+                </td>
+                <td>
+                    <a class="delete_item delete_items_button admin_panel_buttons" data-items-id="@itemType.Id">
+                        <span>Delete</span>
+                    </a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

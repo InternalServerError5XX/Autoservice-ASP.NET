@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automarket.Domain.Entity
+namespace Automarket.Domain.Enum
 {
-    public class Service
+    public enum ServiceStage
     {
-
+        Pending,
+        Diagnostics,
+        Service,
+        Done
     }
 }

@@ -2,6 +2,7 @@
 @using Automarket.Domain.Enum;
 @using Automarket.Domain.ViewModels.Account;
 @using System.Text.RegularExpressions;
+@using Automarket.Service.Interfaces
 @model AccountViewModel
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -19,10 +20,19 @@
 <script src="~/js/layout.js" asp-append-version="true"></script>
 <script src="/js/profile.js" asp-append-version="true"></script>
 
+@inject IMaintenanceService maintenanceService;
+
 @{
     Layout = "_EmptyLayout";
     ViewData["Title"] = "Profile";
     bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+
+    var maintenancesResponse = await maintenanceService.GetMaintenances(Model.Id);
+    int maintenancesCount = 0;
+    if (maintenancesResponse.StatusCode == StatusCode.OK)
+    {
+        maintenancesCount = maintenancesResponse.Data.Count();
+    }
 
     if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
     {
@@ -157,8 +167,9 @@
                     <div class="short_container">
                         <div class="info_line">
                             <span class="short_label">Services status:</span>
-                            <span class="short_text">You have 1 current services</span>
-                            <a class="check_services_button" asp-controller="Home" asp-action="Index">
+                            <span class="short_text">You have @maintenancesCount current services</span>
+                            <a class="check_services_button" asp-controller="Maintenance" asp-action="GetMaintenances"
+                            asp-route-id="@Model.Id">
                                 <span class="settings_text">Check</span>
                             </a>
                         </div>

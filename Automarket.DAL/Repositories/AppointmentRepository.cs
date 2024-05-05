@@ -29,9 +29,9 @@ namespace Automarket.DAL.Repositories
             //await _db.SaveChangesAsync();
         }
 
-        public IQueryable<Appointment> GetAll()
+        public async Task<IQueryable<Appointment>> GetAll()
         {
-            return _db.Appointments;
+            return await Task.FromResult(_db.Appointments);
         }
 
         public async Task<Appointment> Update(Appointment entity)

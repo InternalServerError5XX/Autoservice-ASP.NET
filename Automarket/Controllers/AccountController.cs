@@ -7,7 +7,6 @@ using Automarket.Domain.ViewModels.Account;
 using Automarket.Service.Implementations;
 using Automarket.Domain.Entity;
 using Automarket.Domain.Helpers;
-using Automarket.Domain.ViewModels.Car;
 
 namespace Automarket.Controllers
 {

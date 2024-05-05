@@ -1,0 +1,156 @@
+﻿@using Automarket.Domain.Entity;
+@using System.Text.RegularExpressions;
+@using Automarket.Domain.Enum;
+@model List<Consumable>
+
+@{
+    ViewData["Title"] = "Wishlist";
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+
+    var availableItems = Model.Where(item => item.Quantity > 0);
+    var unavailableItems = Model.Except(availableItems);
+
+    if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
+    {
+        var alertMessage = TempData["AlertMessage"].ToString();
+        var responseStatus = TempData["ResponseStatus"].ToString();
+
+        if (responseStatus == StatusCode.OK.ToString())
+        {
+            <script>
+                showSuccessAlert("@alertMessage");
+            </script>
+        }
+        else
+        {
+            <script>
+                showErrorAlert("@alertMessage");
+            </script>
+        }
+    }
+}
+
+<body>
+    <main>
+        <div class="consumables_container">
+            <section>
+                <div class="pages_path">
+                    <a class="home_icon" asp-controller="Home" asp-action="Index"></a>
+                    <a class="path_current_page inactive">@ViewData["Title"]</a>
+                </div>
+            </section>
+
+            <section>
+                <div class="admin_items_container">
+                    <h2 class="consumables_title">Wishlist</h2>
+                    @if (admin)
+                    {
+                        <a asp-controller="Consumable" asp-action="CreateItem" class="add_item_admin">Add New</a>
+                    }
+                </div>
+            </section>
+
+            <section>
+                <div class="car_consumables">
+                    @if (Model != null && Model.Any())
+                    {
+                        <section id="noItemsFound" class="no_items" style="display:none;">
+                            <span class="no_items_text">No items found!</span>
+                            <span class="no_items_description">Try a different search term</span>
+                        </section>
+
+                        @foreach (var item in availableItems)
+                        {
+                            <div class="card_item wishlist_items">
+                                <a class="card_link" asp-controller="Consumable" asp-action="GetItem" asp-route-id="@item.Id">
+                                    <div class="card_img_container">
+                                        <img class="card_img" src="@item.PhotoPath" alt="Item Photo">
+                                    </div>
+                                    <span class="item_name">@item.Brand @item.Model</span>
+                                </a>
+                                @if (admin)
+                                {
+                                    <a class="add_to_basket_admin" asp-controller="Basket" asp-action="Basket"></a>
+                                }
+                                else
+                                {
+                                    <a class="add_to_basket" asp-controller="Basket" asp-action="Basket"></a>
+                                }
+                                <a asp-controller="Wishlist" asp-action="DeleteFromWishlist"
+                                    asp-route-id="@item.Id" class="delete_icon"></a>
+                                <span class="item_card_price">$@item.Price<br /></span>
+                                <section>
+                                    @if (admin)
+                                    {
+                                        <div class="available_item">Available - @item.Quantity</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="available_item">Available</div>
+                                    }
+                                </section>
+                                <section>
+                                    @if (admin)
+                                    {
+                                        <div class="admin_items_buttons">
+                                            <a class="edit_items" asp-controller="Consumable"
+                                               asp-action="EditItem" asp-route-id="@item.Id">Edit</a>
+                                            <a class="delete_item delete_items_button" data-items-id="@item.Id">
+                                                <span>Delete</span>
+                                            </a>
+                                        </div>
+                                    }
+                                </section>
+                            </div>
+                        }
+
+                        @foreach (var item in unavailableItems)
+                        {
+                            <div class="card_item wishlist_items unavailable">
+                                <a class="card_link" asp-controller="Consumable" asp-action="GetItem" asp-route-id="@item.Id">
+                                    <div class="card_img_container">
+                                        <img class="card_img" src="@item.PhotoPath">
+                                    </div>
+                                    <span class="item_name">@item.Brand @item.Model</span>
+                                </a>
+                                <a asp-controller="Wishlist" asp-action="DeleteFromWishlist"
+                                   asp-route-id="@item.Id" class="delete_icon"></a>
+                                <span class="item_card_price">$@item.Price<br /></span>
+                                <section>
+                                    @if (admin)
+                                    {
+                                        <div class="unavailable_item_card">Unavailable - @item.Quantity</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="unavailable_item_card">Unavailable</div>
+                                    }
+                                </section>
+                                <section>
+                                    @if (admin)
+                                    {
+                                        <div class="admin_items_buttons">
+                                            <a class="edit_items" asp-controller="Consumable"
+                                               asp-action="EditItem" asp-route-id="@item.Id">Edit</a>
+                                            <a class="delete_item delete_items_button" data-items-id="@item.Id">
+                                                <span>Delete</span>
+                                            </a>
+                                        </div>
+                                    }
+                                </section>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="no_items">
+                            <span class="no_items_text">Your wishlist is empty</span>
+                            <span class="no_items_description">Just add some items</span>
+                        </div>
+                    }
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+

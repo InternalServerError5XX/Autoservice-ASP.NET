@@ -13,38 +13,38 @@
 
 <div class="adminpanel_container">
     <h2 class="consumables_title">SecAuto Admin Panel</h2>
-    <a asp-controller="Consumable" asp-action="CreateItem" class="add_item_admin add_account">Add New</a>
+    <a asp-controller="Appointment" asp-action="CreateAppointment" class="add_item_admin add_account">Add New</a>
 
     <section>
         <div class="header_search_form search_account_form">
-            <form class="search_form" onsubmit="event.preventDefault(); searchItemsAdmin();">
-                <input class="search_input search_account" id="itemsSearch" type="text" placeholder="Search...">
+            <form class="search_form" onsubmit="event.preventDefault(); searchAppointmentsAdmin();">
+                <input class="search_input search_account" id="appointmentsSearch" type="text" placeholder="Search...">
                 <button class="search_button" type="submit">Find</button>
             </form>
         </div>
     </section>
 </div>
 
-@*<table class="users_table">
+<table class="users_table">
     <thead>
         <tr class="user_info_titles">
-            <th class="user_info user_info_header" id="carOilsHeader">@ConsumableCategory.Car_Oils.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="carChemistryHeader">@ConsumableCategory.Car_Chemistry.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="carCosmeticsHeader">@ConsumableCategory.Car_Cosmetics.GetDisplayName()</th>
-            <th class="user_info user_info_header" id="allItemsHeader">Total items</th>
+            <th class="user_info user_info_header" id="completedHeader">Completed</th>
+            <th class="user_info user_info_header" id="uncompletedHeader">Uncompleted</th>
+            <th class="user_info user_info_header" id="callbackHeader">Waiting for callback</th>
+            <th class="user_info user_info_header" id="allAppointmentsHeader">Total</th>
         </tr>
     </thead>
     <tbody>
         <tr class="users_info_tr items_info_tr">
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Oils))</td>
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Chemistry))</td>
-            <td class="user_info">@(Model.Items.Count(item => item.ConsumableType == ConsumableCategory.Car_Cosmetics))</td>
-            <td class="user_info">@Model.Items.Count()</td>
+            <td class="user_info">@Model.Appointments.Count(a => a.Checked)</td>
+            <td class="user_info">@Model.Appointments.Count(a => !a.Checked)</td>
+            <td class="user_info">@Model.Appointments.Count(a => !a.Checked && a.CallBack)</td>
+            <td class="user_info">@Model.Appointments.Count()</td>
         </tr>
     </tbody>
-</table>*@
+</table>
 
-<table class="users_table" id="itemsTable">
+<table class="users_table" id="appointmentsTable">
     <thead>
         <tr class="user_info_titles">
             <th class="user_info">ID</th>
@@ -61,14 +61,14 @@
         {
             @if (!appointment.Checked)
             {
-                <tr class="users_info_tr items_info_tr @(appointment.CallBack ? "CallBack_True" : "")">
+                <tr class="users_info_tr items_info_tr @(appointment.CallBack ? "CallBack_True" : "") @(appointment.Checked ? "Completed" : "")">
                     <td class="user_info">@appointment.Id</td>
                     <td class="user_info">@appointment.Name</td>
                     <td class="user_info">@appointment.CallBack</td>
                     <td class="user_info">@appointment.PhoneNumber</td>
                     <td class="user_info">@appointment.AppointmentDate</td>
                     <td>
-                        <a class="edit_items admin_panel_buttons" asp-controller="AutoService"
+                        <a class="edit_items admin_panel_buttons" asp-controller="Appointment"
                            asp-action="GetAppointment" asp-route-id="@appointment.Id">
                             <span>Check</span>
                         </a>
@@ -82,20 +82,20 @@
             }
             else
             {
-                <tr class="users_info_tr items_info_tr unavalible_admin_item @(appointment.CallBack ? "CallBack_True" : "")">
+                <tr class="users_info_tr items_info_tr unavalible_admin_item @(appointment.CallBack ? "CallBack_True" : "") @(appointment.Checked ? "Completed" : "")">
                     <td class="user_info">@appointment.Id</td>
                     <td class="user_info">@appointment.Name</td>
                     <td class="user_info">@appointment.CallBack</td>
                     <td class="user_info">@appointment.PhoneNumber</td>
                     <td class="user_info">@appointment.AppointmentDate</td>
                     <td>
-                        <a class="edit_items admin_panel_buttons" asp-controller="AutoService"
+                        <a class="edit_items admin_panel_buttons" asp-controller="Appointment"
                            asp-action="GetAppointment" asp-route-id="@appointment.Id">
                             <span>Check</span>
                         </a>
                     </td>
                     <td>
-                        <a class="delete_item delete_items_button admin_panel_buttons" data-appointments-id="@appointment.Id">
+                        <a class="delete_item delete_appointments_button admin_panel_buttons" data-appointments-id="@appointment.Id">
                             <span>Delete</span>
                         </a>
                     </td>
