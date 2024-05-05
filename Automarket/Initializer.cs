@@ -15,6 +15,7 @@ namespace Automarket
             services.AddScoped<IBaseRepository<Consumable>, ConsumableRepository>();
             services.AddScoped<IBaseRepository<Appointment>, AppointmentRepository>();
             services.AddScoped<IBaseRepository<Maintenance>, MaintenanceRepository>();
+            services.AddScoped<IBaseRepository<Wishlist>, WishlistRepository>();
         }
 
         public static void InitializeServices(this IServiceCollection services)
@@ -23,6 +24,7 @@ namespace Automarket
             services.AddScoped<IConsumableService, ConsumableService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IMaintenanceService, MaintenanceService>();
+            services.AddScoped<IWishlistService, WishlistService>();
         }
     }
 }

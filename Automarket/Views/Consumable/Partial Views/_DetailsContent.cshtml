@@ -2,15 +2,21 @@
 @using Automarket.Domain.Enum;
 @using Automarket.Domain.Extensions;
 @using Automarket.Domain.ViewModels.ConsumableViewModel;
+@using Automarket.Service.Interfaces
 @model ConsumableViewModel;
+
+@inject IWishlistService WishlistService
 
 @{
     bool secCheck = Model.Brand.Contains("SecAuto");
     double cashback = 2;
     double cashbackValue = (double)Model.Price * cashback / 100;
 
-    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
+    var wishlist = await WishlistService.GetWishlist();
+    var wishIds = wishlist.Data.Select(w => w.Id);
+    var wishCheck = wishIds.Contains(Model.Id);
 
+    bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
     bool available = false;
 
     if (Model.Quantity > 0)
@@ -69,7 +75,17 @@
             <div class="item_price_container mini_container">
                 <div>
                     <span class="item_price">$@Model.Price</span>
-                    <a class="item_favourite_icon" href=""></a>
+                    
+                    @if (wishCheck)
+                    {
+                        <a asp-controller="Wishlist" asp-action="DeleteFromWishlist"
+                           asp-route-id="@Model.Id" class="existing_item_favourite_icon"></a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Wishlist" asp-action="AddToWishlist"
+                           asp-route-id="@Model.Id" class="item_favourite_icon"></a>
+                    }
                 </div>
                 <div class="price_cashback">
                     <span class="price_cashback_text">Cashback $@cashbackValue</span>
