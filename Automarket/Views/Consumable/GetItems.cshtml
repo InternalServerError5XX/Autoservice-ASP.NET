@@ -5,6 +5,7 @@
 @model List<Consumable>
 
 @inject IWishlistService WishlistService
+@inject IBasketService BasketService
 
 @{
     ViewData["Title"] = "Consumables";
@@ -15,6 +16,9 @@
 
     var wishlist = await WishlistService.GetWishlist();
     var wishIds = wishlist.Data.Select(w => w.Id);
+
+    var basket = await BasketService.GetBasket();
+    var basketIds = basket.Data.Select(w => w.Id);
 
     if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
     {
@@ -76,11 +80,29 @@
                                 </a>
                                 @if (admin)
                                 {
-                                    <a class="add_to_basket_admin" asp-controller="Basket" asp-action="Basket"></a>
+                                    if (basketIds.Contains(item.Id))
+                                    {
+                                        <a class="add_to_basket_admin_active" asp-controller="Basket" asp-action="DeleteFromBasket"
+                                           asp-route-id="@item.Id"></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="add_to_basket_admin" asp-controller="Basket" asp-action="AddToBasket"
+                                           asp-route-id="@item.Id"></a>
+                                    }
                                 }
                                 else
                                 {
-                                    <a class="add_to_basket" asp-controller="Basket" asp-action="Basket"></a>
+                                    if (basketIds.Contains(item.Id))
+                                    {
+                                        <a class="add_to_basket_active" asp-controller="Basket" asp-action="DeleteFromBasket"
+                                           asp-route-id="@item.Id"></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="add_to_basket" asp-controller="Basket" asp-action="AddToBasket"
+                                           asp-route-id="@item.Id"></a>
+                                    }
                                 }
 
                                 @if(wishIds.Contains(item.Id))

@@ -4,17 +4,13 @@
 @using Automarket.Service.Interfaces
 @model List<Consumable>
 
-@inject IBasketService BasketService
+@inject IBasketService BasketService;
 
 @{
-    ViewData["Title"] = "Wishlist";
+    ViewData["Title"] = "Basket";
     bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
 
     var availableItems = Model.Where(item => item.Quantity > 0);
-    var unavailableItems = Model.Except(availableItems);
-
-    var basket = await BasketService.GetBasket();
-    var basketIds = basket.Data.Select(w => w.Id);
 
     if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
     {
@@ -48,7 +44,7 @@
 
             <section>
                 <div class="admin_items_container">
-                    <h2 class="consumables_title">Wishlist</h2>
+                    <h2 class="consumables_title">Basket</h2>
                 </div>
             </section>
 
@@ -63,41 +59,58 @@
 
                         @foreach (var item in availableItems)
                         {
+                            var quantity = BasketService.GetQuantity(item.Id).Result.Data;
                             <div class="card_item wishlist_items">
                                 <a class="card_link" asp-controller="Consumable" asp-action="GetItem" asp-route-id="@item.Id">
                                     <div class="card_img_container">
                                         <img class="card_img" src="@item.PhotoPath" alt="Item Photo">
                                     </div>
                                     <span class="item_name">@item.Brand @item.Model</span>
+                                </a>                               
+                                <a asp-controller="Basket" asp-action="DeleteFromBasket"
+                                   asp-route-id="@item.Id" class="delete_icon"></a>
+                                <a class="order_icon" href="">
+                                    <div class="order_icon_svg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="black" class="bi bi-bag-check-fill" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0m-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z" />
+                                        </svg>
+                                    </div>
                                 </a>
-                                @if (admin)
-                                {
-                                    if (basketIds.Contains(item.Id))
+
+                                <div class="plusminus">
+                                    @if (quantity < 99)
                                     {
-                                        <a class="add_to_basket_admin_active" asp-controller="Basket" asp-action="DeleteFromBasket"
-                                           asp-route-id="@item.Id"></a>
+                                        <a asp-controller="Basket" asp-action="Plus"
+                                           asp-route-id="@item.Id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                                            </svg>
+                                        </a>
                                     }
                                     else
                                     {
-                                        <a class="add_to_basket_admin" asp-controller="Basket" asp-action="AddToBasket"
-                                           asp-route-id="@item.Id"></a>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="gray" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                                        </svg>
                                     }
-                                }
-                                else
-                                {
-                                    if (basketIds.Contains(item.Id))
+                                    <span class="basket_quantity">@quantity</span>
+                                    @if (quantity > 1)
                                     {
-                                        <a class="add_to_basket_active" asp-controller="Basket" asp-action="DeleteFromBasket"
-                                           asp-route-id="@item.Id"></a>
-                                    }
+                                        <a asp-controller="Basket" asp-action="Minus"
+                                           asp-route-id="@item.Id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" />
+                                            </svg>
+                                        </a>
+                                    }    
                                     else
                                     {
-                                        <a class="add_to_basket" asp-controller="Basket" asp-action="AddToBasket"
-                                           asp-route-id="@item.Id"></a>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="gray" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" />
+                                        </svg>
                                     }
-                                }
-                                <a asp-controller="Wishlist" asp-action="DeleteFromWishlist"
-                                    asp-route-id="@item.Id" class="delete_icon"></a>
+                                </div>
+
                                 <span class="item_card_price">$@item.Price<br /></span>
                                 <section>
                                     @if (admin)
@@ -123,48 +136,11 @@
                                 </section>
                             </div>
                         }
-
-                        @foreach (var item in unavailableItems)
-                        {
-                            <div class="card_item wishlist_items unavailable">
-                                <a class="card_link" asp-controller="Consumable" asp-action="GetItem" asp-route-id="@item.Id">
-                                    <div class="card_img_container">
-                                        <img class="card_img" src="@item.PhotoPath">
-                                    </div>
-                                    <span class="item_name">@item.Brand @item.Model</span>
-                                </a>
-                                <a asp-controller="Wishlist" asp-action="DeleteFromWishlist"
-                                   asp-route-id="@item.Id" class="delete_icon"></a>
-                                <span class="item_card_price">$@item.Price<br /></span>
-                                <section>
-                                    @if (admin)
-                                    {
-                                        <div class="unavailable_item_card">Unavailable - @item.Quantity</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="unavailable_item_card">Unavailable</div>
-                                    }
-                                </section>
-                                <section>
-                                    @if (admin)
-                                    {
-                                        <div class="admin_items_buttons">
-                                            <a class="edit_items" asp-controller="Consumable"
-                                               asp-action="EditItem" asp-route-id="@item.Id">Edit</a>
-                                            <a class="delete_item delete_items_button" data-items-id="@item.Id">
-                                                <span>Delete</span>
-                                            </a>
-                                        </div>
-                                    }
-                                </section>
-                            </div>
-                        }
                     }
                     else
                     {
                         <div class="no_items">
-                            <span class="no_items_text">Your wishlist is empty</span>
+                            <span class="no_items_text">Your basket is empty</span>
                             <span class="no_items_description">Just add some items</span>
                         </div>
                     }

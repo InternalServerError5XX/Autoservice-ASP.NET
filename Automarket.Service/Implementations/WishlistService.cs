@@ -33,7 +33,7 @@ namespace Automarket.Service.Implementations
             {
                 var userId = await _accountService.GetIdByEmail();
                 var wishlist = await _wishlistRepository.GetAll().Result
-                    .FirstOrDefaultAsync(x => x.ItemId == id);
+                    .FirstOrDefaultAsync(x => x.ItemId == id && x.UserId == userId.Data);
 
                 if (wishlist != null)
                 {
@@ -79,7 +79,7 @@ namespace Automarket.Service.Implementations
             {
                 var userId = await _accountService.GetIdByEmail();
                 var wishlist = await _wishlistRepository.GetAll().Result
-                    .FirstOrDefaultAsync(x => x.ItemId == id);               
+                    .FirstOrDefaultAsync(x => x.ItemId == id && x.UserId == userId.Data);               
 
                 if (wishlist == null)
                 {
@@ -109,11 +109,6 @@ namespace Automarket.Service.Implementations
                     StatusCode = StatusCode.InternalServerError
                 };
             }
-        }
-
-        public Task<BaseResponse<Wishlist>> EditWishlist(long id, Wishlist wishlist)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<BaseResponse<List<Consumable>>> GetWishlist()
@@ -158,6 +153,5 @@ namespace Automarket.Service.Implementations
                 };
             }
         }
-
     }
 }

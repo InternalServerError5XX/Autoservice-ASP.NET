@@ -1,8 +1,10 @@
 ﻿using Automarket.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Automarket.Controllers
 {
+    [Authorize]
     public class WishlistController : Controller
     {
         private readonly IWishlistService _wishlistService;
@@ -60,6 +62,5 @@ namespace Automarket.Controllers
 
             return RedirectToAction("Error", "Errors");
         }
-
     }
 }

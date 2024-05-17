@@ -6,6 +6,7 @@
 @model ConsumableViewModel;
 
 @inject IWishlistService WishlistService
+@inject IBasketService BasketService
 
 @{
     bool secCheck = Model.Brand.Contains("SecAuto");
@@ -15,6 +16,10 @@
     var wishlist = await WishlistService.GetWishlist();
     var wishIds = wishlist.Data.Select(w => w.Id);
     var wishCheck = wishIds.Contains(Model.Id);
+
+    var basket = await BasketService.GetBasket();
+    var basketIds = basket.Data.Select(w => w.Id);
+    var basketCheck = basketIds.Contains(Model.Id);
 
     bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
     bool available = false;
@@ -92,9 +97,20 @@
                 </div>
                 @if (available)
                 {
-                    <a class="buy_button mini_chart" href="">
-                        <span class="mini_buy_button_text">Buy</span>
-                    </a>
+                    if (basketCheck)
+                    {
+                        <a class="buy_button_active mini_chart" asp-controller="Basket" asp-action="DeleteFromBasket"
+                           asp-route-id="@Model.Id">
+                            <span class="mini_buy_button_text">Del</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="buy_button mini_chart" asp-controller="Basket" asp-action="AddToBasket"
+                           asp-route-id="@Model.Id">
+                            <span class="mini_buy_button_text">Buy</span>
+                        </a>
+                    }
                 }
                 else
                 {
