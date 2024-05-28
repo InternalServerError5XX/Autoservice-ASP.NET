@@ -5,12 +5,15 @@
 @model List<Consumable>
 
 @inject IBasketService BasketService;
+@inject IConsumableService ConsumableService;
 
 @{
     ViewData["Title"] = "Basket";
     bool admin = User.IsInRole("Administrator") || User.IsInRole("Admin");
 
     var availableItems = Model.Where(item => item.Quantity > 0);
+    var totalPriceData = await BasketService.GetTotalPrice();
+    var totalPrice = totalPriceData.Data;
 
     if (TempData["AlertMessage"] != null && TempData["ResponseStatus"] != null)
     {
@@ -45,7 +48,10 @@
             <section>
                 <div class="admin_items_container">
                     <h2 class="consumables_title">Basket</h2>
-                </div>
+                    <span class="available_item">
+                        Total price - @totalPrice
+                    </span>
+                </div>               
             </section>
 
             <section>
@@ -60,6 +66,9 @@
                         @foreach (var item in availableItems)
                         {
                             var quantity = BasketService.GetQuantity(item.Id).Result.Data;
+                            var available_quantityData = await ConsumableService.GetQuantity(item.Id);
+                            var available_quantity = available_quantityData.Data;
+
                             <div class="card_item wishlist_items">
                                 <a class="card_link" asp-controller="Consumable" asp-action="GetItem" asp-route-id="@item.Id">
                                     <div class="card_img_container">
@@ -78,7 +87,7 @@
                                 </a>
 
                                 <div class="plusminus">
-                                    @if (quantity < 99)
+                                    @if (quantity < 99 && quantity < available_quantity)
                                     {
                                         <a asp-controller="Basket" asp-action="Plus"
                                            asp-route-id="@item.Id">
@@ -111,7 +120,7 @@
                                     }
                                 </div>
 
-                                <span class="item_card_price">$@item.Price<br /></span>
+                                <span class="item_card_price">₴@item.Price<br /></span>
                                 <section>
                                     @if (admin)
                                     {

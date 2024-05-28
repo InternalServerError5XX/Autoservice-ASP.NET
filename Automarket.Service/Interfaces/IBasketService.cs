@@ -17,7 +17,11 @@ namespace Automarket.Service.Interfaces
         Task<BaseResponse<bool>> DeleteFromBasket(long id);
 
         Task<BaseResponse<bool>> Plus(long id);
+
         Task<BaseResponse<bool>> Minus(long id);
+
         Task<BaseResponse<int>> GetQuantity(long id);
+
+        Task<BaseResponse<double>> GetTotalPrice();
     }
 }

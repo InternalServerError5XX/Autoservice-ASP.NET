@@ -114,7 +114,7 @@ namespace Automarket.Service.Implementations
                 var userId = await _accountService.GetIdByEmail();
                 var basket = await _basketRepository.GetAll().Result
                     .Where(x => x.UserId == userId.Data)
-                    .ToListAsync();
+                    .ToListAsync();         
 
                 if (basket == null)
                 {
@@ -123,6 +123,19 @@ namespace Automarket.Service.Implementations
                         Description = "Basket is empty",
                         StatusCode = StatusCode.OK
                     };
+                }
+
+                foreach (var basketItem in basket)
+                {
+                    var item = await _consumableRepository.GetAll().Result
+                    .FirstOrDefaultAsync(x => x.Id == basketItem.ItemId);
+
+                    if (basketItem.Quantity > item!.Quantity)
+                    {
+                        basketItem.Quantity = item!.Quantity;
+
+                        await _consumableRepository.Update(item!);
+                    }
                 }
 
                 foreach (var wish in basket)
@@ -272,6 +285,39 @@ namespace Automarket.Service.Implementations
                 return new BaseResponse<int>()
                 {
                     Description = $"[GetQuantity] : {ex.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
+        public async Task<BaseResponse<double>> GetTotalPrice()
+        {
+            try
+            {
+                double price = 0;
+                var userId = await _accountService.GetIdByEmail();
+                var basket = await _basketRepository.GetAll().Result
+                    .Where(x => x.UserId == userId.Data)
+                    .ToListAsync();
+
+                foreach (var wish in basket)
+                {
+                    var item = await _consumableRepository.GetAll().Result
+                        .FirstOrDefaultAsync (x => x.Id == wish.ItemId);
+                    price += wish.Quantity * item!.Price;
+                }
+
+                return new BaseResponse<double>()
+                {
+                    Data = price,
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<double>()
+                {
+                    Description = $"[GetTotalPrice] : {ex.Message}",
                     StatusCode = StatusCode.InternalServerError
                 };
             }
