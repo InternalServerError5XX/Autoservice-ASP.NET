@@ -1,4 +1,5 @@
 ﻿using Automarket.DAL.Interfaces;
+using Automarket.DAL.Migrations;
 using Automarket.Domain.Entity;
 using Automarket.Domain.Enum;
 using Automarket.Domain.Responce;
@@ -12,10 +13,15 @@ namespace Automarket.Service.Implementations
     public class ConsumableService : IConsumableService
     {
         private readonly IBaseRepository<Consumable> _consumableRepository;
+        private readonly IBasketService _basketService;
+        private readonly IWishlistService _wishlistService;
 
-        public ConsumableService(IBaseRepository<Consumable> consumableRepository)
+        public ConsumableService(IBaseRepository<Consumable> consumableRepository, 
+            IBasketService basketService, IWishlistService wishlistService)
         {
             _consumableRepository = consumableRepository;
+            _basketService = basketService;
+            _wishlistService = wishlistService;
         }
 
         public async Task<BaseResponse<Consumable>> CreateItem(ConsumableViewModel model)
@@ -88,6 +94,8 @@ namespace Automarket.Service.Implementations
                 string absolutePhotoPath = Path.Combine(Directory.GetCurrentDirectory(), relativePhotoPath);                
 
                 await _consumableRepository.Delete(item);
+                await _basketService.DeleteFromBasket(item.Id);
+                await _wishlistService.DeleteFromWishlist(item.Id);
 
                 if (File.Exists(absolutePhotoPath))
                 {
@@ -239,6 +247,39 @@ namespace Automarket.Service.Implementations
                 };
             }
         }
+
+        public async Task<BaseResponse<int>> GetQuantity(long id)
+        {
+            try
+            {
+                var item = await _consumableRepository.GetAll().Result
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (item == null)
+                {
+                    return new BaseResponse<int>()
+                    {
+                        Description = "Basket not found",
+                        StatusCode = StatusCode.NotFound
+                    };
+                }
+
+                return new BaseResponse<int>()
+                {
+                    Data = item.Quantity,
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<int>()
+                {
+                    Description = $"[GetQuantity] : {ex.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
         public async Task<string> SavePhotoAsync(IFormFile photo, string relativeFolderPath)
         {
             string uniqueFileName = Guid.NewGuid().ToString();

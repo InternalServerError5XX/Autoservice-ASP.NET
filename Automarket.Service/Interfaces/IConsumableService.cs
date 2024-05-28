@@ -20,5 +20,7 @@ namespace Automarket.Service.Interfaces
         Task<BaseResponse<bool>> DeleteItem(long id);
         
         Task<BaseResponse<Consumable>> EditItem(long id, ConsumableViewModel model);
+
+        Task<BaseResponse<int>> GetQuantity(long id);
     }
 }

@@ -16,7 +16,5 @@ namespace Automarket.Service.Interfaces
         Task<BaseResponse<bool>> AddToWishlist(long id);
 
         Task<BaseResponse<bool>> DeleteFromWishlist(long id);
-
-        Task<BaseResponse<Wishlist>> EditWishlist(long id, Wishlist wishlist);
     }
 }
